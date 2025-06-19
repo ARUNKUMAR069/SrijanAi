@@ -1,0 +1,234 @@
+---
+# cPanel Deployment Configuration for Montek Creative Agency
+# This file defines how files should be deployed to your cPanel hosting
+
+# Deployment configuration
+deployment:
+  tasks:
+    # Main deployment task
+    - export DEPLOYPATH=/home/username/public_html/
+    
+    # Copy all files to public_html
+    - /bin/cp -R * $DEPLOYPATH
+    
+    # Set proper permissions for PHP files
+    - find $DEPLOYPATH -name "*.php" -exec chmod 644 {} \;
+    
+    # Set proper permissions for directories
+    - find $DEPLOYPATH -type d -exec chmod 755 {} \;
+    
+    # Set proper permissions for assets
+    - find $DEPLOYPATH/assets -type f -exec chmod 644 {} \;
+    
+    # Set writable permissions for uploads directory (if exists)
+    - mkdir -p $DEPLOYPATH/uploads
+    - chmod 755 $DEPLOYPATH/uploads
+    
+    # Set writable permissions for cache directory (if exists)
+    - mkdir -p $DEPLOYPATH/cache
+    - chmod 755 $DEPLOYPATH/cache
+    
+    # Create .htaccess if it doesn't exist
+    - |
+      if [ ! -f $DEPLOYPATH/.htaccess ]; then
+        cat > $DEPLOYPATH/.htaccess << 'EOF'
+        # Enable mod_rewrite
+        RewriteEngine On
+        
+        # Force HTTPS (uncomment if you have SSL)
+        # RewriteCond %{HTTPS} off
+        # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+        
+        # Remove .php extension from URLs
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteRule ^([^\.]+)$ $1.php [NC,L]
+        
+        # Prevent access to sensitive files
+        <Files ".htaccess">
+        Require all denied
+        </Files>
+        
+        <Files "*.yml">
+        Require all denied
+        </Files>
+        
+        <Files "*.log">
+        Require all denied
+        </Files>
+        
+        # Set default index files
+        DirectoryIndex index.php index.html
+        
+        # Enable compression
+        <IfModule mod_deflate.c>
+            AddOutputFilterByType DEFLATE text/plain
+            AddOutputFilterByType DEFLATE text/html
+            AddOutputFilterByType DEFLATE text/xml
+            AddOutputFilterByType DEFLATE text/css
+            AddOutputFilterByType DEFLATE application/xml
+            AddOutputFilterByType DEFLATE application/xhtml+xml
+            AddOutputFilterByType DEFLATE application/rss+xml
+            AddOutputFilterByType DEFLATE application/javascript
+            AddOutputFilterByType DEFLATE application/x-javascript
+        </IfModule>
+        
+        # Set cache headers
+        <IfModule mod_expires.c>
+            ExpiresActive on
+            ExpiresByType text/css "access plus 1 year"
+            ExpiresByType application/javascript "access plus 1 year"
+            ExpiresByType image/png "access plus 1 year"
+            ExpiresByType image/jpg "access plus 1 year"
+            ExpiresByType image/jpeg "access plus 1 year"
+            ExpiresByType image/gif "access plus 1 year"
+        </IfModule>
+        EOF
+      fi
+    
+    # Create error pages
+    - |
+      cat > $DEPLOYPATH/404.php << 'EOF'
+      <?php
+      http_response_code(404);
+      ?>
+      <!DOCTYPE html>
+      <html>
+      <head>
+          <title>Page Not Found - Montek Creative</title>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <link href="assets/css/bootstrap.css" rel="stylesheet">
+          <link href="assets/css/style.css" rel="stylesheet">
+          <link href="assets/css/theme.css" rel="stylesheet">
+      </head>
+      <body class="dark-theme">
+          <div class="error-page">
+              <div class="auto-container">
+                  <div class="content">
+                      <h1>404</h1>
+                      <h2>Page Not Found</h2>
+                      <p>The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
+                      <a href="index.php" class="btn btn-primary">Go Home</a>
+                  </div>
+              </div>
+          </div>
+      </body>
+      </html>
+      EOF
+    
+    # Create robots.txt
+    - |
+      cat > $DEPLOYPATH/robots.txt << 'EOF'
+      User-agent: *
+      Allow: /
+      
+      # Disallow sensitive directories
+      Disallow: /components/
+      Disallow: /includes/
+      Disallow: /cache/
+      Disallow: /*.yml
+      Disallow: /*.log
+      
+      # Sitemap location (update with your domain)
+      Sitemap: https://yourdomain.com/sitemap.xml
+      EOF
+    
+    # Create basic sitemap.xml
+    - |
+      cat > $DEPLOYPATH/sitemap.xml << 'EOF'
+      <?xml version="1.0" encoding="UTF-8"?>
+      <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+          <url>
+              <loc>https://yourdomain.com/</loc>
+              <lastmod>2024-12-17</lastmod>
+              <changefreq>weekly</changefreq>
+              <priority>1.0</priority>
+          </url>
+          <url>
+              <loc>https://yourdomain.com/about</loc>
+              <lastmod>2024-12-17</lastmod>
+              <changefreq>monthly</changefreq>
+              <priority>0.8</priority>
+          </url>
+          <url>
+              <loc>https://yourdomain.com/contact</loc>
+              <lastmod>2024-12-17</lastmod>
+              <changefreq>monthly</changefreq>
+              <priority>0.8</priority>
+          </url>
+          <url>
+              <loc>https://yourdomain.com/work</loc>
+              <lastmod>2024-12-17</lastmod>
+              <changefreq>weekly</changefreq>
+              <priority>0.9</priority>
+          </url>
+          <url>
+              <loc>https://yourdomain.com/journal</loc>
+              <lastmod>2024-12-17</lastmod>
+              <changefreq>weekly</changefreq>
+              <priority>0.9</priority>
+          </url>
+      </urlset>
+      EOF
+    
+    # Set proper ownership (adjust username as needed)
+    - chown -R username:username $DEPLOYPATH
+    
+    # Clear any existing cache
+    - rm -rf $DEPLOYPATH/cache/*
+    
+    # Create maintenance mode file (optional)
+    - |
+      cat > $DEPLOYPATH/maintenance.php << 'EOF'
+      <?php
+      // Maintenance mode - rename this file to maintenance_mode.php to activate
+      if (file_exists('maintenance_mode.php') && !in_array($_SERVER['REMOTE_ADDR'], ['YOUR_IP_ADDRESS'])) {
+          http_response_code(503);
+          ?>
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>Maintenance - Montek Creative</title>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          </head>
+          <body>
+              <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+                  <h1>Site Under Maintenance</h1>
+                  <p>We're currently performing scheduled maintenance. We'll be back shortly!</p>
+              </div>
+          </body>
+          </html>
+          <?php
+          exit;
+      }
+      EOF
+
+# Additional configuration options
+# You can uncomment and modify these as needed
+
+# Environment variables (if needed)
+# environment:
+#   - NODE_ENV=production
+#   - PHP_VERSION=8.1
+
+# Exclude files from deployment
+exclude:
+  - "*.log"
+  - "*.tmp"
+  - ".git/*"
+  - ".vscode/*"
+  - "node_modules/*"
+  - "*.md"
+  - ".gitignore"
+  - ".env"
+
+# Include specific files (if needed)
+# include:
+#   - "important-file.txt"
+
+# Post deployment commands (if needed)
+# post_deploy:
+#   - echo "Deployment completed successfully"
+#   - php $DEPLOYPATH/clear-cache.php
