@@ -1,0 +1,872 @@
+/* Popup Theme Variables */
+.popup-overlay {
+    --main-color: rgb(186,2,74);
+    --main-color-rgb: 186,2,74;
+    --color-two: rgb(84,0,69);
+    --color-two-rgb: 84,0,69;
+    --color-three: rgb(18,12,18);
+    --color-three-rgb: 18,12,18;
+    --color-four: rgb(15,15,15);
+    --color-four-rgb: 15,15,15;
+    --white-color: rgb(255,255,255);
+    --white-color-rgb: 255,255,255;
+    --black-color: rgb(0,0,0);
+    --black-color-rgb: 0,0,0;
+}
+
+/* Popup Overlay */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(var(--black-color-rgb), 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.popup-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Popup Container - Rectangle Shape - No Scroll */
+.popup-container {
+    background: var(--white-color);
+    border-radius: 0;
+    max-width: 580px;
+    width: 90%;
+    height: auto;
+    max-height: 95vh;
+    overflow: hidden;
+    box-shadow: 0 25px 80px rgba(var(--black-color-rgb), 0.4);
+    transform: scale(0.9) translateY(30px);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    border: 2px solid var(--main-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.popup-overlay.active .popup-container {
+    transform: scale(1) translateY(0);
+}
+
+/* Popup Header - Compact */
+.popup-header {
+    background: linear-gradient(135deg, var(--main-color) 0%, var(--color-two) 100%);
+    color: var(--white-color);
+    padding: 25px 30px 20px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.popup-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    opacity: 0.3;
+}
+
+.popup-header-content {
+    position: relative;
+    z-index: 2;
+}
+
+.popup-title {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 5px;
+    font-family: 'Inter', sans-serif;
+}
+
+.popup-heading {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    font-weight: 700;
+    font-family: 'Lora', serif;
+    line-height: 1.2;
+}
+
+.popup-subtitle {
+    color: rgba(var(--white-color-rgb), 0.9);
+    font-size: 14px;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+}
+
+.popup-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(var(--white-color-rgb), 0.15);
+    border: 1px solid rgba(var(--white-color-rgb), 0.3);
+    color: var(--white-color);
+    font-size: 16px;
+    width: 35px;
+    height: 35px;
+    border-radius: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 3;
+}
+
+.popup-close:hover {
+    background: rgba(var(--white-color-rgb), 0.25);
+    transform: scale(1.05);
+}
+
+/* Popup Body - Flexible */
+.popup-body {
+    padding: 25px 30px 30px;
+    background: var(--white-color);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Form Styling - Compact */
+.enquiry-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    height: 100%;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group {
+    position: relative;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper i {
+    position: absolute;
+    left: 15px;
+    color: var(--main-color);
+    font-size: 14px;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+.input-wrapper input,
+.input-wrapper select,
+.input-wrapper textarea {
+    width: 100%;
+    padding: 12px 15px 12px 40px;
+    border: 2px solid var(--color-three);
+    border-radius: 0;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    transition: all 0.3s ease;
+    background: rgba(var(--color-three-rgb), 0.02);
+    color: var(--color-three);
+}
+
+.input-wrapper.textarea-wrapper {
+    align-items: flex-start;
+}
+
+.input-wrapper.textarea-wrapper i {
+    top: 12px;
+}
+
+.input-wrapper textarea {
+    resize: none;
+    height: 80px;
+    min-height: 80px;
+    max-height: 80px;
+}
+
+.input-wrapper input:focus,
+.input-wrapper select:focus,
+.input-wrapper textarea:focus {
+    outline: none;
+    border-color: var(--main-color);
+    background: var(--white-color);
+    box-shadow: 0 0 0 3px rgba(var(--main-color-rgb), 0.1);
+}
+
+.input-wrapper input:focus + i,
+.input-wrapper select:focus + i,
+.input-wrapper textarea:focus + i {
+    color: var(--color-two);
+    transform: scale(1.1);
+}
+
+.input-wrapper input::placeholder,
+.input-wrapper textarea::placeholder {
+    color: rgba(var(--color-three-rgb), 0.6);
+}
+
+/* Select Styling */
+.input-wrapper select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ba024a' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 12px center;
+    background-repeat: no-repeat;
+    background-size: 14px;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+/* Submit Button - Compact */
+.submit-btn {
+    background: linear-gradient(135deg, var(--main-color) 0%, var(--color-two) 100%);
+    color: var(--white-color);
+    border: none;
+    padding: 14px 35px;
+    border-radius: 0;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    min-width: 160px;
+}
+
+.submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(var(--white-color-rgb), 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.submit-btn:hover::before {
+    left: 100%;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(var(--main-color-rgb), 0.4);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+.submit-btn i {
+    transition: transform 0.3s ease;
+}
+
+.submit-btn:hover i {
+    transform: translateX(4px);
+}
+
+/* Success Message - Compact */
+.success-message {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: var(--white-color);
+    padding: 15px;
+    border-radius: 0;
+    text-align: center;
+    margin-bottom: 15px;
+    display: none;
+    border-left: 4px solid #34d399;
+    font-size: 14px;
+}
+
+.success-message.show {
+    display: block;
+    animation: slideInDown 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.success-message i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+/* Error Styling */
+.form-group.error .input-wrapper input,
+.form-group.error .input-wrapper select,
+.form-group.error .input-wrapper textarea {
+    border-color: #dc2626;
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.form-group.error .input-wrapper i {
+    color: #dc2626;
+}
+
+.error-message {
+    color: #dc2626;
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+    font-weight: 500;
+}
+
+.form-group.error .error-message {
+    display: block;
+}
+
+/* Loading State */
+.submit-btn.loading {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.submit-btn.loading span {
+    opacity: 0;
+}
+
+.submit-btn.loading::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 2px solid transparent;
+    border-top: 2px solid var(--white-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Animations */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile Responsiveness - No Scroll */
+@media (max-width: 768px) {
+    .popup-container {
+        width: 95%;
+        max-height: 95vh;
+    }
+    
+    .popup-header {
+        padding: 20px;
+    }
+    
+    .popup-heading {
+        font-size: 20px;
+    }
+    
+    .popup-body {
+        padding: 20px;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .enquiry-form {
+        gap: 15px;
+    }
+    
+    .input-wrapper input,
+    .input-wrapper select,
+    .input-wrapper textarea {
+        font-size: 14px;
+        padding: 12px 15px 12px 40px;
+    }
+    
+    .input-wrapper textarea {
+        height: 70px;
+        min-height: 70px;
+        max-height: 70px;
+    }
+    
+    .submit-btn {
+        padding: 12px 25px;
+        font-size: 13px;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .popup-container {
+        width: 95%;
+        max-height: 95vh;
+    }
+    
+    .popup-header {
+        padding: 18px 15px;
+    }
+    
+    .popup-heading {
+        font-size: 18px;
+    }
+    
+    .popup-body {
+        padding: 18px 15px;
+    }
+    
+    .popup-close {
+        width: 30px;
+        height: 30px;
+        top: 12px;
+        right: 12px;
+        font-size: 14px;
+    }
+    
+    .input-wrapper textarea {
+        height: 60px;
+        min-height: 60px;
+        max-height: 60px;
+    }
+}
+
+@media (max-height: 600px) {
+    .popup-container {
+        max-height: 95vh;
+    }
+    
+    .popup-header {
+        padding: 15px 20px;
+    }
+    
+    .popup-heading {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+    
+    .popup-subtitle {
+        font-size: 12px;
+    }
+    
+    .popup-body {
+        padding: 15px 20px;
+    }
+    
+    .enquiry-form {
+        gap: 12px;
+    }
+    
+    .input-wrapper input,
+    .input-wrapper select,
+    .input-wrapper textarea {
+        padding: 10px 12px 10px 35px;
+        font-size: 13px;
+    }
+    
+    .input-wrapper textarea {
+        height: 50px;
+        min-height: 50px;
+        max-height: 50px;
+    }
+    
+    .submit-btn {
+        padding: 10px 25px;
+        font-size: 12px;
+    }
+}
+
+/* Dark Theme Support */
+.dark-theme .popup-container {
+    background: var(--color-four);
+    color: var(--white-color);
+}
+
+.dark-theme .popup-body {
+    background: var(--color-four);
+}
+
+.dark-theme .input-wrapper input,
+.dark-theme .input-wrapper select,
+.dark-theme .input-wrapper textarea {
+    background: var(--color-three);
+    border-color: rgba(var(--white-color-rgb), 0.2);
+    color: var(--white-color);
+}
+
+.dark-theme .input-wrapper input:focus,
+.dark-theme .input-wrapper select:focus,
+.dark-theme .input-wrapper textarea:focus {
+    background: var(--color-three);
+    border-color: var(--main-color);
+}
+
+.dark-theme .input-wrapper input::placeholder,
+.dark-theme .input-wrapper textarea::placeholder {
+    color: rgba(var(--white-color-rgb), 0.6);
+}
+/* Enquire Now Button Styles */
+.enquire-button {
+    --main-color: rgb(186,2,74);
+    --main-color-rgb: 186,2,74;
+    --color-two: rgb(84,0,69);
+    --color-two-rgb: 84,0,69;
+    --white-color: rgb(255,255,255);
+    --white-color-rgb: 255,255,255;
+    
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    z-index: 9998;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.enquire-button-content {
+    background: linear-gradient(135deg, var(--main-color) 0%, var(--color-two) 100%);
+    color: var(--white-color);
+    padding: 15px 25px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 8px 25px rgba(var(--main-color-rgb), 0.4);
+    position: relative;
+    overflow: hidden;
+    min-width: 160px;
+    justify-content: center;
+    border: 2px solid transparent;
+    backdrop-filter: blur(10px);
+}
+
+.enquire-button-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(var(--white-color-rgb), 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.enquire-button:hover .enquire-button-content::before {
+    left: 100%;
+}
+
+.enquire-button i {
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+.enquire-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+/* Pulse Animation */
+.enquire-pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 50px;
+    background: rgba(var(--main-color-rgb), 0.3);
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite;
+    pointer-events: none;
+}
+
+@keyframes pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 0.4;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0;
+    }
+}
+
+/* Hover Effects */
+.enquire-button:hover {
+    transform: translateY(-3px) scale(1.05);
+}
+
+.enquire-button:hover .enquire-button-content {
+    box-shadow: 0 15px 40px rgba(var(--main-color-rgb), 0.6);
+    border-color: rgba(var(--white-color-rgb), 0.3);
+}
+
+.enquire-button:hover i {
+    transform: scale(1.2) rotate(10deg);
+}
+
+.enquire-button:hover .enquire-text {
+    transform: scale(1.05);
+}
+
+.enquire-button:active {
+    transform: translateY(-1px) scale(1.02);
+}
+
+/* Click Animation */
+@keyframes buttonClick {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.enquire-button.clicked {
+    animation: buttonClick 0.3s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .enquire-button {
+        bottom: 20px;
+        left: 20px;
+    }
+    
+    .enquire-button-content {
+        padding: 12px 20px;
+        min-width: 140px;
+    }
+    
+    .enquire-button i {
+        font-size: 16px;
+    }
+    
+    .enquire-text {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .enquire-button {
+        bottom: 15px;
+        left: 15px;
+    }
+    
+    .enquire-button-content {
+        padding: 10px 18px;
+        min-width: 120px;
+    }
+    
+    .enquire-button i {
+        font-size: 15px;
+    }
+    
+    .enquire-text {
+        font-size: 13px;
+    }
+}
+
+/* Alternative Vertical Design */
+.enquire-button.vertical .enquire-button-content {
+    flex-direction: column;
+    padding: 20px 15px;
+    border-radius: 15px;
+    min-width: auto;
+    gap: 8px;
+}
+
+.enquire-button.vertical .enquire-text {
+    font-size: 12px;
+    writing-mode: vertical-lr;
+    text-orientation: mixed;
+}
+
+.enquire-button.vertical .enquire-pulse {
+    border-radius: 15px;
+}
+
+/* Dark Theme Compatibility */
+.dark-theme .enquire-button-content {
+    background: linear-gradient(135deg, var(--main-color) 0%, var(--color-two) 100%);
+    box-shadow: 0 8px 25px rgba(var(--main-color-rgb), 0.5);
+}
+
+.dark-theme .enquire-button:hover .enquire-button-content {
+    box-shadow: 0 15px 40px rgba(var(--main-color-rgb), 0.7);
+}
+
+/* Hide on very small screens to avoid overlap */
+@media (max-width: 320px) {
+    .enquire-button {
+        display: none;
+    }
+}
+
+/* Additional Hover States */
+.enquire-button-content:hover {
+    background: linear-gradient(135deg, 
+        rgba(var(--main-color-rgb), 0.9) 0%, 
+        rgba(var(--color-two-rgb), 0.9) 100%);
+}
+
+/* Smooth entrance animation */
+@keyframes slideInFromLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.enquire-button {
+    animation: slideInFromLeft 0.8s ease-out 1s both;
+}
+
+/* Focus state for accessibility */
+.enquire-button:focus {
+    outline: 3px solid rgba(var(--main-color-rgb), 0.5);
+    outline-offset: 2px;
+}
+
+.enquire-button:focus .enquire-button-content {
+    border-color: var(--white-color);
+}
+
+
+.success-message, .error-message {
+    display: none;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    text-align: center;
+    animation: slideInDown 0.5s ease;
+}
+
+.success-message {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    border: 1px solid #c3e6cb;
+    color: #155724;
+}
+
+.error-message {
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+
+.success-message i, .error-message i {
+    font-size: 24px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.success-message.show, .error-message.show {
+    display: block;
+}
+
+.privacy-notice {
+    text-align: center;
+    margin: 15px 0;
+    color: #666;
+}
+
+.privacy-notice i {
+    color: var(--main-color);
+    margin-right: 5px;
+}
+
+.btn-loader {
+    display: none;
+}
+
+.submit-btn.loading .btn-text,
+.submit-btn.loading .btn-icon {
+    display: none;
+}
+
+.submit-btn.loading .btn-loader {
+    display: inline-block;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-group.error .input-wrapper {
+    border-color: #dc3545 !important;
+}
+
+.form-group.error input,
+.form-group.error select,
+.form-group.error textarea {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+}

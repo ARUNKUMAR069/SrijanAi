@@ -1,0 +1,2421 @@
+/**
+ * Light Theme Styles
+ * Header/Navbar and Theme Toggle Only
+ */
+
+/* ====================================================================
+   Root Variables for Light Theme
+   ==================================================================== */
+@import url('global.css');
+@import url('header.css');
+@import url('footer.css');
+@import url('animate.css');
+@import url('swiper.min.css');
+@import url('font-awesome.css');
+@import url('custom-animate.css');
+@import url('odometer-theme-default.css');
+
+/* Light Theme Variables */
+[data-theme="light"] {
+    /* Light theme specific colors */
+    --light-bg-primary: rgb(255, 255, 255);
+    --light-bg-secondary: rgb(248, 249, 250);
+    --light-bg-tertiary: rgb(241, 243, 245);
+    --light-text-primary: rgb(33, 37, 41);
+    --light-text-secondary: rgb(73, 80, 87);
+    --light-text-muted: rgb(108, 117, 125);
+    --light-border: rgba(0, 0, 0, 0.125);
+    --light-shadow: rgba(0, 0, 0, 0.15);
+    --light-accent: rgb(13, 110, 253);
+    
+    /* Header specific variables */
+    --light-header-bg: rgb(255, 255, 255);
+    --light-header-border: rgb(233, 236, 239);
+    --light-header-link: rgb(35, 39, 47);
+}
+
+/* ====================================================================
+   Modern Theme Toggle Button Styles
+   ==================================================================== */
+
+.theme-toggle-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(100px);
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.theme-toggle-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.theme-toggle {
+    position: relative;
+    background: linear-gradient(135deg, 
+        rgba(var(--main-color-rgb), 0.9) 0%, 
+        rgba(var(--color-two-rgb), 0.9) 100%);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 60px;
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(20px);
+    pointer-events: auto;
+    overflow: hidden;
+    box-shadow: 
+        0 8px 32px rgba(var(--main-color-rgb), 0.3),
+        0 2px 8px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.theme-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 40px rgba(var(--main-color-rgb), 0.4),
+        0 4px 16px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.theme-toggle:active {
+    transform: translateY(0);
+}
+
+.theme-toggle.switching {
+    animation: switchPulse 0.6s ease-out;
+}
+
+@keyframes switchPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Toggle Track */
+.toggle-track {
+    position: relative;
+    width: 50px;
+    height: 26px;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.1) 0%, 
+        rgba(255, 255, 255, 0.05) 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    transition: all 0.4s ease;
+}
+
+/* Toggle Thumb */
+.toggle-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 50%;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.2),
+        0 1px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Icon Container */
+.icon-container {
+    position: relative;
+    width: 12px;
+    height: 12px;
+}
+
+.icon-sun,
+.icon-moon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #666;
+}
+
+/* Background Elements */
+.toggle-bg-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+.star-1 { top: 4px; right: 8px; }
+.star-2 { top: 8px; right: 15px; }
+.star-3 { top: 14px; right: 10px; }
+
+.cloud {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 10px;
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+.cloud-1 {
+    width: 8px;
+    height: 4px;
+    top: 6px;
+    left: 8px;
+}
+
+.cloud-2 {
+    width: 6px;
+    height: 3px;
+    top: 12px;
+    left: 12px;
+}
+
+/* Toggle Label */
+.toggle-label {
+    position: relative;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    white-space: nowrap;
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.5px;
+}
+
+.theme-toggle:hover .toggle-label {
+    opacity: 1;
+    width: 50px;
+    margin-left: 4px;
+}
+
+/* Light Theme States */
+[data-theme="light"] .toggle-thumb {
+    transform: translateX(24px);
+    background: linear-gradient(135deg, #FFA726 0%, #FF9800 100%);
+    box-shadow: 
+        0 2px 8px rgba(255, 152, 0, 0.3),
+        0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .toggle-track {
+    background: linear-gradient(135deg, 
+        rgba(33, 150, 243, 0.3) 0%, 
+        rgba(30, 136, 229, 0.3) 100%);
+}
+
+[data-theme="light"] .icon-moon {
+    opacity: 0;
+    transform: rotate(180deg) scale(0.3);
+}
+
+[data-theme="light"] .icon-sun {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+    color: #FF8F00;
+}
+
+[data-theme="light"] .star {
+    opacity: 0;
+}
+
+[data-theme="light"] .cloud {
+    opacity: 1;
+}
+
+/* Dark Theme States */
+[data-theme="dark"] .toggle-thumb,
+:root:not([data-theme]) .toggle-thumb {
+    transform: translateX(0);
+    background: linear-gradient(135deg, #424242 0%, #212121 100%);
+}
+
+[data-theme="dark"] .toggle-track,
+:root:not([data-theme]) .toggle-track {
+    background: linear-gradient(135deg, 
+        rgba(63, 81, 181, 0.2) 0%, 
+        rgba(48, 63, 159, 0.2) 100%);
+}
+
+[data-theme="dark"] .icon-sun,
+:root:not([data-theme]) .icon-sun {
+    opacity: 0;
+    transform: rotate(-180deg) scale(0.3);
+}
+
+[data-theme="dark"] .icon-moon,
+:root:not([data-theme]) .icon-moon {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+    color: #E1F5FE;
+}
+
+[data-theme="dark"] .star,
+:root:not([data-theme]) .star {
+    opacity: 1;
+    animation: twinkle 2s infinite alternate;
+}
+
+[data-theme="dark"] .cloud,
+:root:not([data-theme]) .cloud {
+    opacity: 0;
+}
+
+@keyframes twinkle {
+    0% { opacity: 0.3; }
+    100% { opacity: 1; }
+}
+
+/* ====================================================================
+   Header/Navbar Light Theme
+   ==================================================================== */
+
+[data-theme="light"] .main-header {
+    background: var(--light-header-bg);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    border-bottom: 1px solid var(--light-header-border);
+}
+
+[data-theme="light"] .main-header .logo-box .logo img {
+    filter: none;
+}
+
+[data-theme="light"] .main-header .inner-container {
+    background: transparent;
+}
+
+[data-theme="light"] .main-header .navigation > li > a,
+[data-theme="light"] .main-header .main-menu .navigation > li > a {
+    color: var(--light-header-link);
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+[data-theme="light"] .main-header .navigation > li > a:hover,
+[data-theme="light"] .main-header .main-menu .navigation > li > a:hover,
+[data-theme="light"] .main-header .navigation > li.current > a {
+    color: var(--main-color);
+}
+
+[data-theme="light"] .main-header .navbar-toggler svg,
+[data-theme="light"] .main-header .mobile-nav-toggler svg {
+    color: var(--light-header-link);
+}
+
+[data-theme="light"] .main-header .mobile-menu {
+    background: var(--light-header-bg);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .main-header .mobile-menu .close-btn span {
+    color: var(--main-color);
+}
+
+[data-theme="light"] .main-header .menu-box .navigation > li > a {
+    color: var(--light-header-link);
+}
+
+[data-theme="light"] .main-header .menu-box .navigation > li > a:hover,
+[data-theme="light"] .main-header .menu-box .navigation > li.current > a {
+    color: var(--main-color);
+}
+
+[data-theme="light"] .main-header .nav-logo img {
+    filter: none;
+}
+
+/* Optional: Logo variants for different themes */
+[data-theme="light"] .main-header .logo-box .logo img.light-logo {
+    display: inline;
+}
+[data-theme="light"] .main-header .logo-box .logo img.dark-logo {
+    display: none;
+}
+:root:not([data-theme="light"]) .main-header .logo-box .logo img.light-logo {
+    display: none;
+}
+:root:not([data-theme="light"]) .main-header .logo-box .logo img.dark-logo {
+    display: inline;
+}
+
+/* ====================================================================
+   Global Light Theme Body Styles
+   ==================================================================== */
+
+[data-theme="light"] body {
+    background-color: var(--light-bg-primary);
+    color: var(--light-text-primary);
+}
+
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] h5,
+[data-theme="light"] h6 {
+    color: var(--light-text-primary);
+}
+
+[data-theme="light"] .text,
+[data-theme="light"] p {
+    color: var(--light-text-secondary);
+}
+
+/* Smooth theme transition */
+.theme-transitioning * {
+    transition: background-color 0.4s ease, 
+                color 0.4s ease, 
+                border-color 0.4s ease,
+                box-shadow 0.4s ease !important;
+}
+
+/* ====================================================================
+   Mobile Responsiveness
+   ==================================================================== */
+
+@media (max-width: 768px) {
+    .theme-toggle-container {
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .theme-toggle {
+        padding: 6px;
+        gap: 10px;
+    }
+    
+    .toggle-track {
+        width: 44px;
+        height: 24px;
+    }
+    
+    .toggle-thumb {
+        width: 18px;
+        height: 18px;
+    }
+    
+    [data-theme="light"] .toggle-thumb {
+        transform: translateX(20px);
+    }
+    
+    .icon-container {
+        width: 10px;
+        height: 10px;
+    }
+    
+    .icon-sun,
+    .icon-moon {
+        width: 10px;
+        height: 10px;
+    }
+    
+    [data-theme="light"] .main-header .mobile-nav-toggler svg {
+        color: var(--main-color);
+    }
+}
+
+@media (max-width: 480px) {
+    .theme-toggle-container {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .theme-toggle {
+        padding: 5px;
+    }
+    
+    .toggle-track {
+        width: 40px;
+        height: 22px;
+    }
+    
+    .toggle-thumb {
+        width: 16px;
+        height: 16px;
+    }
+    
+    [data-theme="light"] .toggle-thumb {
+        transform: translateX(18px);
+    }
+}
+
+/* ====================================================================
+   Accessibility
+   ==================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .theme-toggle,
+    .toggle-thumb,
+    .icon-sun,
+    .icon-moon,
+    .toggle-label,
+    .star {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+.theme-toggle:focus {
+    outline: 3px solid rgba(255, 255, 255, 0.5);
+    outline-offset: 3px;
+}
+
+@media (prefers-contrast: high) {
+    .theme-toggle {
+        border: 3px solid var(--white-color);
+        background: var(--main-color);
+    }
+}
+
+/* ====================================================================
+   Banner Section Light Theme (Matching Original Design)
+   ==================================================================== */
+
+/* Banner Section Background - Light Theme */
+[data-theme="light"] .banner-one {
+    position: relative;
+    padding: 280px 0px 80px;
+    background-size: cover;
+}
+
+[data-theme="light"] .banner-one:before {
+    position: absolute;
+    content: '';
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    opacity: 0.95; /* Slightly higher opacity for light theme */
+    background-color: var(--light-bg-primary); /* Light overlay instead of color-four */
+}
+
+[data-theme="light"] .banner-one_content {
+    position: relative;
+    z-index: 2;
+}
+
+[data-theme="light"] .banner-one_content-inner {
+    position: relative;
+}
+
+/* FIXED: Banner Heading - Light Theme */
+[data-theme="light"] .banner-one_heading {
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 80px;
+    color: var(--light-text-primary) !important; /* Dark text for light theme */
+    text-transform: uppercase;
+}
+
+/* FIXED: Banner Text - Light Theme */
+[data-theme="light"] .banner-one_text {
+    position: relative;
+    font-size: 30px;
+    line-height: 40px;
+    padding-top: 20px;
+    padding-right: 180px;
+    color: var(--light-text-primary) !important; /* Dark text for light theme */
+    border-top: 1px solid var(--main-color); /* Use main color for border */
+}
+
+[data-theme="light"] .banner-one_text-two {
+    position: relative;
+    font-size: 30px;
+    line-height: 40px;
+    padding-bottom: 20px;
+    padding-right: 180px;
+    color: var(--light-text-primary) !important; /* Dark text for light theme */
+    border-bottom: 1px solid var(--light-text-primary); /* Dark border for light theme */
+}
+
+/* Down Box - Keep Original Animation */
+[data-theme="light"] .banner-one .down-box {
+    position: absolute;
+    left: 47%;
+    bottom: 65px;
+    z-index: 10;
+    width: 125px;
+    height: 125px;
+    cursor: pointer;
+    -webkit-animation: icon-bounce 0.8s ease-out infinite;
+    animation: icon-bounce 0.8s ease-out infinite;
+}
+
+/* ====================================================================
+   Services Section Light Theme (Matching Original Design)
+   ==================================================================== */
+
+/* Services Section Background - Light Theme */
+[data-theme="light"] .services-one {
+    position: relative;
+    padding: 100px 0px 70px;
+    background: var(--main-color);
+    background: linear-gradient(to top, var(--main-color) 0%, var(--color-two) 100%);
+    /* Keep original gradient - it works well in both themes */
+}
+
+[data-theme="light"] .service-block_one {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+/* Services Block Inner - Light Theme */
+[data-theme="light"] .service-block_one-inner {
+    position: relative;
+    padding: 35px 40px;
+    border: 1px solid rgba(var(--white-color-rgb), 0.20);
+}
+
+/* Services Hover Effect - Keep Original */
+[data-theme="light"] .service-block_one-inner:before {
+    position: absolute;
+    content: '';
+    left: -1px;
+    top: -1px;
+    right: -1px;
+    bottom: -1px;
+    opacity: 0;
+    transform: scale(1, 0.2);
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+    background-color: var(--color-three);
+}
+
+[data-theme="light"] .service-block_one-inner:hover::before {
+    opacity: 1;
+    transform: scale(1, 1);
+}
+
+/* Services Heading - Keep Original White Text */
+[data-theme="light"] .service-block_one-heading {
+    position: relative;
+    font-weight: 400;
+    color: #fff; /* Keep white text on gradient background */
+}
+
+[data-theme="light"] .service-block_one-heading a {
+    position: relative;
+    color: var(--white-color); /* Keep white text */
+}
+
+[data-theme="light"] .service-block_one-icon {
+    position: relative;
+}
+
+/* Services View More Button - Light Theme Adjustments */
+[data-theme="light"] .service-block_one-more {
+    position: relative;
+    margin-left: 25px;
+}
+
+[data-theme="light"] .service-block_one-more .view-more {
+    position: relative;
+    font-size: 16px;
+    line-height: 1em;
+    display: inline-block;
+    padding: 9px 45px 9px 10px;
+    color: var(--color-four);
+    text-transform: uppercase;
+    background-color: var(--white-color);
+}
+
+[data-theme="light"] .service-block_one-more .view-more i {
+    position: absolute;
+    right: 1px;
+    top: 1px;
+    bottom: 1px;
+    width: 35px;
+    font-size: 18px;
+    line-height: 33px;
+    color: var(--white-color);
+    background-color: var(--color-four);
+}
+
+/* ====================================================================
+   Gallery Section Light Theme (Matching Original Design)
+   ==================================================================== */
+
+/* Gallery Section Background - Light Theme */
+[data-theme="light"] .gallery-one {
+    position: relative;
+    padding: 100px 0px 70px;
+    background-color: var(--light-bg-primary); /* Light equivalent of color-four */
+}
+
+[data-theme="light"] .gallery-block_one {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+[data-theme="light"] .gallery-block_one-inner {
+    position: relative;
+}
+
+/* FIXED: Gallery Content - Light Theme */
+[data-theme="light"] .gallery-block_one-content {
+    position: relative;
+    padding: 25px 25px;
+    border: 1px solid rgba(var(--light-text-primary-rgb), 0.2); /* Light border */
+    background-color: var(--light-bg-secondary);
+}
+
+/* Gallery Hover Effect - Light Theme */
+[data-theme="light"] .gallery-block_one-content:before {
+    position: absolute;
+    content: '';
+    left: -1px;
+    top: -1px;
+    right: -1px;
+    bottom: -1px;
+    opacity: 0;
+    transform: scale(0.2, 1);
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+    background: var(--main-color);
+    background: linear-gradient(to top, var(--main-color) 0%, var(--color-two) 100%);
+}
+
+[data-theme="light"] .gallery-block_one-inner:hover .gallery-block_one-content:before {
+    opacity: 1;
+    transform: scale(1, 1);
+}
+
+/* Gallery Image - Keep Original Shine Effect */
+[data-theme="light"] .gallery-block_one-image {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+[data-theme="light"] .gallery-block_one-inner:hover .gallery-block_one-image:before {
+    -webkit-animation: shine 1s;
+    animation: shine 1s;
+}
+
+[data-theme="light"] .gallery-block_one-image:before {
+    position: absolute;
+    top: 0;
+    left: -85%;
+    z-index: 99;
+    display: block;
+    content: '';
+    width: 50%;
+    height: 100%;
+    background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, .7) 100%);
+    background: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0)), to(rgba(255, 255, 255, .7)));
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, .7) 100%);
+    -webkit-transform: skewX(-25deg);
+    -ms-transform: skewX(-25deg);
+    transform: skewX(-25deg);
+}
+
+[data-theme="light"] .gallery-block_one-image img {
+    position: relative;
+    width: 100%;
+    display: block;
+}
+
+/* FIXED: Gallery Title - Light Theme */
+[data-theme="light"] .gallery-block_one-title {
+    position: relative;
+    font-size: 18px;
+    text-transform: capitalize;
+    color: var(--light-text-muted) !important; /* Muted text for light theme */
+    z-index: 2;
+    transition: color 500ms ease;
+}
+
+[data-theme="light"] .gallery-block_one-inner:hover .gallery-block_one-title {
+    color: rgba(var(--white-color-rgb), 0.8) !important; /* Light text on hover */
+}
+
+/* FIXED: Gallery Heading - Light Theme */
+[data-theme="light"] .gallery-block_one-heading {
+    position: relative;
+    font-weight: 600;
+    margin-top: 10px;
+    text-transform: uppercase;
+    z-index: 2;
+}
+
+[data-theme="light"] .gallery-block_one-heading a {
+    position: relative;
+    color: var(--light-text-primary) !important; /* Dark text for light theme */
+    transition: color 500ms ease;
+}
+
+[data-theme="light"] .gallery-block_one-inner:hover .gallery-block_one-heading a {
+    color: var(--white-color) !important; /* White text on hover */
+}
+
+[data-theme="light"] .gallery-block_one-heading a:hover {
+    color: rgb(255, 255, 255) !important;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    [data-theme="light"] .banner-one_text,
+    [data-theme="light"] .banner-one_text-two {
+        font-size: 24px;
+        line-height: 34px;
+        padding-right: 20px;
+    }
+    
+    [data-theme="light"] .banner-one {
+        padding: 200px 0px 60px;
+    }
+    
+    [data-theme="light"] .banner-one .down-box {
+        left: 45%;
+        bottom: 40px;
+        width: 100px;
+        height: 100px;
+    }
+}
+
+@media (max-width: 576px) {
+    [data-theme="light"] .banner-one_text,
+    [data-theme="light"] .banner-one_text-two {
+        font-size: 20px;
+        line-height: 30px;
+        padding-right: 10px;
+    }
+    
+    [data-theme="light"] .service-block_one-inner,
+    [data-theme="light"] .gallery-block_one-content {
+        padding: 25px 20px;
+    }
+}
+
+/* Remove animation conflicts */
+[data-theme="light"] .service-block_one-inner,
+[data-theme="light"] .gallery-block_one_inner {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    [data-theme="light"] .banner-one_heading,
+    [data-theme="light"] .banner-one_text,
+    [data-theme="light"] .banner-one_text-two {
+        color: #000 !important;
+        font-weight: 800 !important;
+    }
+    
+    [data-theme="light"] .gallery-block_one-title,
+    [data-theme="light"] .gallery-block_one-heading a {
+        color: #000 !important;
+        font-weight: 700 !important;
+    }
+}
+
+/* ====================================================================
+   Services Section Light Theme
+   ==================================================================== */
+
+/* Services Section Background */
+[data-theme="light"] .services-one {
+    background: var(--light-bg-primary);
+    position: relative;
+}
+
+/* Section Title Light Theme */
+[data-theme="light"] .services-one .sec-title {
+    margin-bottom: 60px;
+}
+
+[data-theme="light"] .services-one .sec-title_heading {
+    color: var(--light-text-primary);
+    font-weight: 700;
+    text-shadow: none;
+}
+
+[data-theme="light"] .services-one .sec-title_icon {
+    opacity: 0.8;
+    filter: brightness(0.7) contrast(1.2);
+}
+
+/* Service Block Light Theme */
+[data-theme="light"] .service-block_one {
+    margin-bottom: 30px;
+}
+
+[data-theme="light"] .service-block_one-inner {
+    background: var(--light-bg-secondary);
+    border: 1px solid var(--light-border);
+    border-radius: 12px;
+    padding: 40px 30px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    /* Remove conflicting animations */
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+[data-theme="light"] .service-block_one-inner:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    border-color: rgba(var(--main-color-rgb), 0.2);
+}
+
+/* Service Block Heading */
+[data-theme="light"] .service-block_one-heading {
+    color: var(--light-text-primary);
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 1.3;
+    margin: 0;
+    transition: color 0.3s ease;
+}
+
+[data-theme="light"] .service-block_one-inner:hover .service-block_one-heading {
+    color: var(--main-color);
+}
+
+/* Service Block Icon */
+[data-theme="light"] .service-block_one-icon {
+    background: rgba(var(--main-color-rgb), 0.1);
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+[data-theme="light"] .service-block_one-inner:hover .service-block_one-icon {
+    background: var(--main-color);
+    transform: scale(1.1);
+}
+
+[data-theme="light"] .service-block_one-icon img {
+    width: 40px;
+    height: 40px;
+    transition: all 0.3s ease;
+    filter: brightness(0.7);
+}
+
+[data-theme="light"] .service-block_one-inner:hover .service-block_one-icon img {
+    filter: brightness(0) invert(1);
+    transform: scale(1.1);
+}
+
+/* Add subtle background pattern */
+[data-theme="light"] .service-block_one-inner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(45deg, 
+        rgba(var(--main-color-rgb), 0.03) 0%, 
+        transparent 50%);
+    border-radius: 0 12px 0 100px;
+    transition: all 0.3s ease;
+}
+
+[data-theme="light"] .service-block_one-inner:hover::before {
+    background: linear-gradient(45deg, 
+        rgba(var(--main-color-rgb), 0.08) 0%, 
+        transparent 50%);
+}
+
+/* Service Grid Improvements */
+[data-theme="light"] .services-one .row {
+    margin: 0 -15px;
+}
+
+[data-theme="light"] .service-block_one {
+    padding: 0 15px;
+}
+
+/* Mobile Responsiveness for Services */
+@media (max-width: 768px) {
+    [data-theme="light"] .service-block_one-inner {
+        padding: 30px 20px;
+        margin-bottom: 20px;
+    }
+    
+    [data-theme="light"] .service-block_one-heading {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    
+    [data-theme="light"] .service-block_one-icon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    [data-theme="light"] .service-block_one-icon img {
+        width: 30px;
+        height: 30px;
+    }
+    
+    [data-theme="light"] .service-block_one-inner {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    [data-theme="light"] .services-one .sec-title_heading {
+        font-size: 36px;
+    }
+    
+    [data-theme="light"] .service-block_one-inner {
+        padding: 25px 15px;
+    }
+    
+    [data-theme="light"] .service-block_one-heading {
+        font-size: 18px;
+    }
+}
+
+/* Animation for service blocks on scroll (optional enhancement) */
+@media (prefers-reduced-motion: no-preference) {
+    [data-theme="light"] .service-block_one {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 0.6s ease forwards;
+    }
+    
+    [data-theme="light"] .service-block_one:nth-child(1) { animation-delay: 0.1s; }
+    [data-theme="light"] .service-block_one:nth-child(2) { animation-delay: 0.2s; }
+    [data-theme="light"] .service-block_one:nth-child(3) { animation-delay: 0.3s; }
+    [data-theme="light"] .service-block_one:nth-child(4) { animation-delay: 0.4s; }
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    [data-theme="light"] .service-block_one-inner {
+        border: 2px solid var(--light-text-primary);
+    }
+    
+    [data-theme="light"] .service-block_one-heading {
+        font-weight: 700;
+    }
+}
+
+/* ====================================================================
+   Gallery Section Light Theme
+   ==================================================================== */
+
+/* Gallery Section Background */
+[data-theme="light"] .gallery-one {
+    background: var(--light-bg-primary);
+    position: relative;
+}
+
+/* Gallery Block Light Theme */
+[data-theme="light"] .gallery-block_one {
+    margin-bottom: 40px;
+}
+
+[data-theme="light"] .gallery-block_one-inner {
+    background: var(--light-bg-secondary);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.08),
+        0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--light-border);
+    position: relative;
+    /* Fix animation conflicts */
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+}
+
+[data-theme="light"] .gallery-block_one-inner:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.12),
+        0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: rgba(var(--main-color-rgb), 0.3);
+    background: var(--light-bg-primary);
+}
+
+/* Gallery Image Container */
+[data-theme="light"] .gallery-block_one-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px 16px 0 0;
+    aspect-ratio: 16/10;
+}
+
+[data-theme="light"] .gallery-block_one-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+    filter: brightness(1) contrast(1.05) saturate(1.1);
+}
+
+[data-theme="light"] .gallery-block_one-inner:hover .gallery-block_one-image img {
+    transform: scale(1.03);
+    filter: brightness(1.05) contrast(1.1) saturate(1.15);
+}
+
+/* Image overlay */
+[data-theme="light"] .gallery-block_one-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(var(--main-color-rgb), 0.05) 0%,
+        rgba(var(--color-two-rgb), 0.03) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+[data-theme="light"] .gallery-block_one-inner:hover .gallery-block_one-image::after {
+    opacity: 1;
+}
+
+/* Gallery Content */
+[data-theme="light"] .gallery-block_one-content {
+    padding: 30px 25px 20px;
+    position: relative;
+    background: transparent;
+    transition: all 0.3s ease;
+}
+
+[data-theme="light"] .gallery-block_one-inner:hover .gallery-block_one-content {
+    background: transparent;
+}
+
+/* FIXED: Gallery Title (Category like "Branding") - Better Contrast */
+[data-theme="light"] .gallery-block_one-title,
+[data-theme="light"] .gallery-block_one-category {
+    color: var(--main-color) !important;
+    font-size: 14px;
+    font-weight: 700; /* Increased weight for better visibility */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    position: relative;
+    transition: all 0.3s ease;
+    text-shadow: none; /* Remove any text shadow */
+}
+
+/* Force title color to stay consistent on hover */
+[data-theme="light"] .gallery-block_one-inner:hover .gallery-block_one-title,
+[data-theme="light"] .gallery-block_one-inner:hover .gallery-block_one-category {
+    color: #8b0027 !important; /* Darker shade for better contrast */
+    text-shadow: none;
+}
+
+[data-theme="light"] .gallery-block_one-title::after,
+[data-theme="light"] .gallery-block_one-category::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 30px;
+    height: 2px;
+    background: var(--main-color);
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+
+[data-theme="light"] .gallery-block_one-inner:hover .gallery-block_one-title::after,
+[data-theme="light"] .gallery-block_one-inner:hover .gallery-block_one-category::after {
+    width: 50px;
+    opacity: 1;
+    background: #8b0027;
+}
+
+/* Gallery Heading */
+[data-theme="light"] .gallery-block_one-heading {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+[data-theme="light"] .gallery-block_one-heading a {
+    color: var(--light-text-primary) !important;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+[data-theme="light"] .gallery-block_one-inner:hover .gallery-block_one_heading a {
+    color: #1a1a1a !important;
+}
+
+/* Gallery Description */
+[data-theme="light"] .gallery-block_one-text {
+    color: var(--light-text-secondary);
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 15px 0 0 0;
+    transition: color 0.3s ease;
+}
+
+[data-theme="light"] .gallery-block_one-inner:hover .gallery-block_one-text {
+    color: var(--light-text-secondary);
+}
+
+/* FIXED: View Project Button - Fully Responsive */
+[data-theme="light"] .gallery-block_one-more,
+[data-theme="light"] .service-block_one-more {
+    padding: 20px 25px 25px;
+    border-top: 1px solid var(--light-border);
+    margin-top: 15px;
+    background: transparent;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+[data-theme="light"] .gallery-block_one-inner:hover .gallery-block_one_more,
+[data-theme="light"] .gallery-block_one_inner:hover .service-block_one-more {
+    background: transparent;
+    border-top-color: rgba(var(--main-color-rgb), 0.2);
+}
+
+[data-theme="light"] .gallery-block_one-more .view_more,
+[data-theme="light"] .service-block_one-more .view_more {
+    color: var(--main-color) !important;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    width: 100%;
+    padding: 8px 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    text-align: left;
+}
+
+[data-theme="light"] .gallery-block_one-more .view_more:hover,
+[data-theme="light"] .service-block_one-more .view_more:hover {
+    color: #8b0027 !important; /* Darker for better contrast */
+    transform: translateX(3px);
+}
+
+[data-theme="light"] .gallery-block_one-more .view_more i,
+[data-theme="light"] .service-block_one-more .view_more i {
+    transition: transform 0.3s ease;
+    font-size: 12px;
+    color: inherit;
+}
+
+[data-theme="light"] .gallery-block_one-more .view_more:hover i,
+[data-theme="light"] .service-block_one-more .view_more:hover i {
+    transform: translateX(2px);
+}
+
+/* Mobile Responsiveness - Enhanced */
+@media (max-width: 768px) {
+    [data-theme="light"] .gallery-block_one {
+        margin-bottom: 30px;
+    }
+    
+    [data-theme="light"] .gallery-block_one-content {
+        padding: 25px 20px 15px;
+    }
+    
+    [data-theme="light"] .gallery-block_one-heading {
+        font-size: 20px;
+    }
+    
+    /* Better mobile button styling */
+    [data-theme="light"] .gallery-block_one-more,
+    [data-theme="light"] .service-block_one-more {
+        padding: 15px 20px 20px;
+    }
+    
+    [data-theme="light"] .gallery-block_one-more .view_more,
+    [data-theme="light"] .service-block_one-more .view_more {
+        font-size: 14px;
+        padding: 10px 0;
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    [data-theme="light"] .gallery-block_one-title,
+    [data-theme="light"] .gallery-block_one-category {
+        font-size: 13px;
+        font-weight: 700; /* Keep bold on mobile */
+    }
+    
+    /* Force contrast on mobile hover */
+    [data-theme="light"] .gallery-block_one-inner:hover .gallery-block_one-title,
+    [data-theme="light"] .gallery-block_one_inner:hover .gallery-block_one-category {
+        color: #8b0027 !important;
+    }
+}
+
+@media (max-width: 576px) {
+    [data-theme="light"] .gallery-block_one-inner {
+        border-radius: 12px;
+    }
+    
+    [data-theme="light"] .gallery-block_one-image {
+        border-radius: 12px 12px 0 0;
+    }
+    
+    [data-theme="light"] .gallery-block_one-content {
+        padding: 20px 15px 10px;
+    }
+    
+    [data-theme="light"] .gallery-block_one-heading {
+        font-size: 18px;
+    }
+    
+    /* Small screen button optimization */
+    [data-theme="light"] .gallery-block_one-more,
+    [data-theme="light"] .service-block_one-more {
+        padding: 12px 15px 15px;
+    }
+    
+    [data-theme="light"] .gallery-block_one-more .view_more,
+    [data-theme="light"] .service-block_one-more .view_more {
+        font-size: 13px;
+        padding: 8px 0;
+        gap: 6px;
+    }
+    
+    [data-theme="light"] .gallery-block_one-title,
+    [data-theme="light"] .gallery-block_one-category {
+        font-size: 12px;
+        letter-spacing: 0.5px;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    [data-theme="light"] .gallery-block_one-more .view_more,
+    [data-theme="light"] .service-block_one_more .view_more {
+        padding: 12px 0;
+        min-height: 44px; /* Touch target size */
+        align-items: center;
+    }
+    
+    /* Better touch feedback */
+    [data-theme="light"] .gallery-block_one-more .view_more:active,
+    [data-theme="light"] .service-block_one_more .view_more:active {
+        background: rgba(var(--main-color-rgb), 0.1);
+        border-radius: 4px;
+        padding: 12px 8px;
+        margin: 0 -8px;
+    }
+}
+
+/* High contrast mode - Enhanced */
+@media (prefers-contrast: high) {
+    [data-theme="light"] .gallery-block_one_inner {
+        border: 2px solid var(--light-text-primary);
+    }
+    
+    [data-theme="light"] .gallery-block_one-title,
+    [data-theme="light"] .gallery-block_one-category,
+    [data-theme="light"] .gallery-block_one-heading a {
+        font-weight: 800 !important;
+        color: #000 !important;
+    }
+    
+    [data-theme="light"] .gallery-block_one-more .view_more {
+        color: var(--main-color) !important;
+        font-weight: 700 !important;
+        border: 1px solid var(--main-color);
+        padding: 8px 12px !important;
+        border-radius: 4px;
+    }
+}
+
+/* Ensure all text remains readable */
+[data-theme="light"] .gallery-block_one-inner *:not(img) {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Force proper inheritance */
+[data-theme="light"] .gallery-block_one-inner h1,
+[data-theme="light"] .gallery-block_one-inner h2,
+[data-theme="light"] .gallery-block_one-inner h3,
+[data-theme="light"] .gallery-block_one-inner h4,
+[data-theme="light"] .gallery-block_one-inner h5,
+[data-theme="light"] .gallery-block_one-inner h6,
+[data-theme="light"] .gallery-block_one-inner p,
+[data-theme="light"] .gallery-block_one-inner span,
+[data-theme="light"] .gallery-block_one-inner a {
+    color: inherit;
+}
+
+/* ====================================================================
+   Animation-Safe Theme Implementation
+   ==================================================================== */
+
+/* Override WOW animations for smooth theme transitions */
+[data-theme="light"] .wow {
+    animation-fill-mode: both !important;
+    visibility: visible !important;
+}
+
+/* Ensure theme transitions work properly with animations */
+.theme-transitioning .wow {
+    animation-play-state: paused !important;
+}
+
+/* Reset animations after theme transition */
+body:not(.theme-transitioning) .wow {
+    animation-play-state: running !important;
+}
+
+/* ====================================================================
+   Services Section Light Theme (Animation Fixed)
+   ==================================================================== */
+
+[data-theme="light"] .service-block_one-inner {
+    background: var(--light-bg-secondary);
+    border: 1px solid var(--light-border);
+    border-radius: 12px;
+    padding: 40px 30px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    /* Remove conflicting animations */
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+[data-theme="light"] .service-block_one-inner:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    border-color: rgba(var(--main-color-rgb), 0.2);
+}
+
+/* ====================================================================
+   Gallery Section Light Theme (Animation Fixed)
+   ==================================================================== */
+
+[data-theme="light"] .gallery-block_one-inner {
+    background: var(--light-bg-secondary);
+    border-radius: 16px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--light-border);
+    /* Fix animation conflicts */
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+}
+
+[data-theme="light"] .gallery-block_one-inner:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    border-color: rgba(var(--main-color-rgb), 0.2);
+}
+
+/* ====================================================================
+   Journal Section Light Theme (Matching Original Design)
+   ==================================================================== */
+
+/* Journal Section Background - Light Theme */
+[data-theme="light"] .journal-one {
+    background-color: var(--light-bg-primary);
+    position: relative;
+    padding: 100px 0px 70px;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+[data-theme="light"] .journal-one:before {
+    position: absolute;
+    content: '';
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    opacity: 0.05; /* Much lighter overlay for light theme */
+    background-color: var(--light-text-primary);
+}
+
+/* Journal Block Container */
+[data-theme="light"] .journal-one .journal-block_one {
+    width: 20%;
+    float: left;
+    padding: 0px 15px;
+}
+
+[data-theme="light"] .journal-block_one {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+/* FIXED: Journal Block Inner - Matching Original Structure */
+[data-theme="light"] .journal-block_one-inner {
+    position: relative;
+    padding: 25px 25px;
+    background-color: rgba(var(--light-text-primary-rgb), 0.08); /* Light equivalent of dark background */
+    border: 1px solid var(--light-border);
+    /* Remove conflicting styles from previous version */
+    border-radius: 0; /* Keep original sharp corners */
+    box-shadow: none; /* Remove modern shadows */
+}
+
+/* FIXED: Hover Gradient Effect - Light Theme */
+[data-theme="light"] .journal-block_one-inner:before {
+    position: absolute;
+    content: '';
+    left: -1px;
+    top: -1px;
+    right: -1px;
+    bottom: -1px;
+    opacity: 0;
+    transform: scale(0.2, 1);
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+    background: var(--main-color);
+    background: linear-gradient(to top, var(--main-color) 0%, var(--color-two) 100%);
+}
+
+[data-theme="light"] .journal-block_one-inner:hover::before {
+    opacity: 1;
+    transform: scale(1, 1);
+}
+
+/* FIXED: Journal Title - Light Theme */
+[data-theme="light"] .journal-block_one-title {
+    position: relative;
+    font-size: 14px;
+    padding: 5px 15px;
+    text-transform: capitalize;
+    color: var(--light-text-primary) !important; /* Dark text for light theme */
+    display: inline-block;
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+    border: 1px solid rgba(var(--light-text-primary-rgb), 0.3); /* Light border */
+    z-index: 2;
+}
+
+[data-theme="light"] .journal-block_one-inner:hover .journal-block_one-title {
+    color: var(--white-color) !important; /* White text on hover */
+    border-color: var(--color-four);
+    background-color: var(--color-four);
+}
+
+/* FIXED: Journal Heading - Light Theme */
+[data-theme="light"] .journal-block_one-heading {
+    position: relative;
+    font-weight: 400;
+    margin-top: 18px;
+    max-width: 220px;
+    margin-bottom: 110px;
+    z-index: 2;
+}
+
+[data-theme="light"] .journal-block_one-heading a {
+    position: relative;
+    color: var(--light-text-primary) !important; /* Dark text for light theme */
+    transition: color 500ms ease;
+}
+
+[data-theme="light"] .journal-block_one-inner:hover .journal-block_one_heading a {
+    color: var(--white-color) !important; /* White text on hover */
+}
+
+/* FIXED: Journal Arrow - Light Theme */
+[data-theme="light"] .journal-block_one-arrow {
+    position: absolute;
+    right: 10px;
+    bottom: 15px;
+    line-height: 1em;
+    font-size: 30px;
+    display: inline-block;
+    color: var(--light-text-primary) !important; /* Dark arrow for light theme */
+    transform: rotate(45deg);
+    transition: color 500ms ease;
+    z-index: 2;
+}
+
+[data-theme="light"] .journal-block_one-inner:hover .journal-block_one-arrow {
+    color: var(--white-color) !important; /* White arrow on hover */
+}
+
+/* Ensure z-index for hover elements */
+[data-theme="light"] .journal-block_one-inner:hover .journal-block_one-title,
+[data-theme="light"] .journal-block_one-inner:hover .journal-block_one-heading,
+[data-theme="light"] .journal-block_one-inner:hover .journal-block_one-arrow {
+    z-index: 3;
+}
+
+/* Mobile Responsiveness - Keep Original Behavior */
+@media (max-width: 1200px) {
+    [data-theme="light"] .journal-one .journal-block_one {
+        width: 25%;
+    }
+}
+
+@media (max-width: 992px) {
+    [data-theme="light"] .journal-one .journal-block_one {
+        width: 33.333%;
+    }
+}
+
+@media (max-width: 768px) {
+    [data-theme="light"] .journal-one .journal-block_one {
+        width: 50%;
+    }
+}
+
+@media (max-width: 576px) {
+    [data-theme="light"] .journal-one .journal-block_one {
+        width: 100%;
+    }
+    
+    [data-theme="light"] .journal-block_one-heading {
+        margin-bottom: 80px;
+    }
+}
+
+/* Remove animation conflicts */
+[data-theme="light"] .journal-block_one-inner {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+}
+
+/* ====================================================================
+   Testimonials Section Light Theme (Matching Original Design)
+   ==================================================================== */
+
+/* Testimonials Section Background - Light Theme */
+[data-theme="light"] .testimonial-one {
+    position: relative;
+    padding: 100px 0px 70px;
+    background-color: var(--light-bg-primary); /* Light equivalent of color-four */
+}
+
+[data-theme="light"] .testimonial-one.style-two {
+    padding-top: 0px;
+    background: none;
+}
+
+/* Testimonial Block */
+[data-theme="light"] .testimonial-block_one {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+[data-theme="light"] .testimonial-block_one-inner {
+    position: relative;
+}
+
+/* FIXED: Testimonial Content - Matching Original Structure */
+[data-theme="light"] .testimonial-block_one-content {
+    position: relative;
+    padding: 25px 25px;
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+    border: 1px solid rgba(var(--light-text-primary), 0.15); /* Light border */
+}
+
+/* FIXED: 3D Flip Effect - Light Theme */
+[data-theme="light"] .testimonial-block_one-content:before {
+    position: absolute;
+    content: '';
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    opacity: 0;
+    background-color: var(--light-bg-secondary); /* Light background instead of white */
+    
+    -webkit-transition: all 900ms ease;
+    -ms-transition: all 900ms ease;
+    -o-transition: all 900ms ease;
+    transition: all 900ms ease;
+    -webkit-transform: perspective(400px) rotateX(-90deg);
+    -moz-transform: perspective(400px) rotateX(-90deg);
+    -ms-transform: perspective(400px) rotateX(-90deg);
+    -o-transform: perspective(400px) rotateX(-90deg);
+    transform: perspective(400px) rotateX(-90deg);
+    -webkit-transform-origin: top;
+    -moz-transform-origin: top;
+    -ms-transform-origin: top;
+    -o-transform-origin: top;
+    transform-origin: top;
+    -ms-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+[data-theme="light"] .testimonial-block_one-inner:hover .testimonial-block_one-content:before {
+    opacity: 1;
+    -webkit-transform: perspective(400px) rotateX(0deg);
+    -moz-transform: perspective(400px) rotateX(0deg);
+    -ms-transform: perspective(400px) rotateX(0deg);
+    -o-transform: perspective(400px) rotateX(0deg);
+    transform: perspective(400px) rotateX(0deg);
+}
+
+/* FIXED: Author Avatar - Light Theme */
+[data-theme="light"] .testimonial-block_one-author {
+    position: relative;
+    width: 70px;
+    height: 70px;
+    display: inline-block;
+}
+
+/* FIXED: Client Name - Light Theme */
+[data-theme="light"] .testimonial-block_one-name {
+    position: relative;
+    font-weight: 500;
+    margin-top: 25px;
+    color: var(--light-text-primary) !important; /* Dark text for light theme */
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+    z-index: 2;
+}
+
+/* FIXED: Hover States - Light Theme */
+[data-theme="light"] .testimonial-block_one-inner:hover .testimonial-block_one-designation,
+[data-theme="light"] .testimonial-block_one-inner:hover .testimonial-block_one-name {
+    color: var(--main-color) !important; /* Use main color on hover */
+}
+
+/* FIXED: Client Designation - Light Theme */
+[data-theme="light"] .testimonial-block_one-designation {
+    position: relative;
+    font-weight: 400;
+    font-size: 15px;
+    margin-top: 5px;
+    opacity: 0.6; /* Higher opacity for better visibility in light theme */
+    color: var(--light-text-secondary) !important; /* Muted text for light theme */
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+    z-index: 2;
+}
+
+/* FIXED: Testimonial Number - Light Theme */
+[data-theme="light"] .testimonial-block_one-number {
+    position: relative;
+    font-weight: 700;
+    font-size: 40px;
+    margin-top: 30px;
+    opacity: 0.15; /* Slightly higher opacity for light theme */
+    text-align: right;
+    color: var(--light-text-primary) !important; /* Dark text for light theme */
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+    z-index: 2;
+}
+
+[data-theme="light"] .testimonial-block_one-inner:hover .testimonial-block_one-number {
+    opacity: 1;
+    color: var(--main-color) !important; /* Use main color on hover */
+}
+
+/* FIXED: Testimonial Text - Light Theme */
+[data-theme="light"] .testimonial-block_one-lower {
+    position: relative;
+    margin-left: 30px;
+    margin-top: 25px;
+    font-size: 18px;
+    line-height: 28px;
+    padding-left: 70px;
+    color: var(--light-text-primary) !important; /* Dark text for light theme */
+    z-index: 2;
+    transition: color 500ms ease;
+}
+
+[data-theme="light"] .testimonial-block_one-inner:hover .testimonial-block_one-lower {
+    color: var(--light-text-primary) !important; /* Keep text readable on hover */
+}
+
+/* FIXED: Quote Icon - Light Theme */
+[data-theme="light"] .testimonial-block_one-lower .quote_icon {
+    position: absolute;
+    left: 0px;
+    top: 6px;
+    line-height: 1em;
+    color: var(--main-color) !important; /* Main color for quote icon */
+    z-index: 2;
+}
+
+[data-theme="light"] .testimonial-block_one-inner:hover .testimonial-block_one-lower .quote_icon {
+    color: var(--main-color) !important; /* Keep quote icon visible */
+}
+
+/* Ensure z-index for all content elements */
+[data-theme="light"] .testimonial-block_one-author,
+[data-theme="light"] .testimonial-block_one-name,
+[data-theme="light"] .testimonial-block_one-designation,
+[data-theme="light"] .testimonial-block_one-number,
+[data-theme="light"] .testimonial-block_one-lower {
+    z-index: 3;
+    position: relative;
+}
+
+/* Mobile Responsiveness - Keep Original Behavior */
+@media (max-width: 768px) {
+    [data-theme="light"] .testimonial-block_one-lower {
+        margin-left: 15px;
+        padding-left: 50px;
+        font-size: 16px;
+        line-height: 26px;
+    }
+    
+    [data-theme="light"] .testimonial-block_one-number {
+        font-size: 35px;
+        margin-top: 20px;
+    }
+    
+    [data-theme="light"] .testimonial-block_one-author {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 576px) {
+    [data-theme="light"] .testimonial-block_one-content {
+        padding: 20px 20px;
+    }
+    
+    [data-theme="light"] .testimonial-block_one-lower {
+        margin-left: 10px;
+        padding-left: 40px;
+        font-size: 15px;
+        line-height: 24px;
+    }
+    
+    [data-theme="light"] .testimonial-block_one-number {
+        font-size: 30px;
+    }
+    
+    [data-theme="light"] .testimonial-block_one-author {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+/* Remove animation conflicts */
+[data-theme="light"] .testimonial-block_one-inner {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+}
+
+/* ====================================================================
+   Stats Section Light Theme (Matching Original Design)
+   ==================================================================== */
+
+/* Stats Section Background - Light Theme */
+[data-theme="light"] .stats-one {
+    position: relative;
+    padding: 100px 0px 100px;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+[data-theme="light"] .stats-one.style-two::before {
+    display: none;
+}
+
+/* FIXED: Stats Overlay - Light Theme */
+[data-theme="light"] .stats-one:before {
+    position: absolute;
+    content: '';
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    opacity: 0.95; /* Slightly higher opacity for light theme */
+    background-color: var(--light-bg-primary); /* Light background overlay */
+}
+
+/* FIXED: Inner Container - Light Theme */
+[data-theme="light"] .stats-one .inner-container {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(var(--light-text-primary-rgb), 0.2); /* Light border */
+    border-bottom: 0px;
+}
+
+[data-theme="light"] .stats-one .counter-block_one {
+    float: left;
+    padding: 0px 0px;
+}
+
+[data-theme="light"] .counter-block_one {
+    position: relative;
+}
+
+/* FIXED: Counter Block Inner - Light Theme */
+[data-theme="light"] .counter-block_one-inner {
+    position: relative;
+    padding: 35px 55px;
+    border-right: 1px solid rgba(var(--light-text-primary-rgb), 0.2); /* Light border */
+    border-bottom: 1px solid rgba(var(--light-text-primary-rgb), 0.2); /* Light border */
+}
+
+/* FIXED: Gradient Dot - Light Theme */
+[data-theme="light"] .counter-block_one-inner:before {
+    position: absolute;
+    content: '';
+    right: 20px;
+    top: 20px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50px;
+    background: var(--main-color);
+    background: linear-gradient(to top, var(--main-color) 0%, var(--color-two) 100%);
+}
+
+/* FIXED: Counter Number - Light Theme */
+[data-theme="light"] .counter-block_one-counter {
+    position: relative;
+    font-size: 75px;
+    font-weight: 500;
+    line-height: 1em;
+    color: var(--light-text-primary) !important; /* Dark numbers for light theme */
+}
+
+/* FIXED: Counter Text - Light Theme */
+[data-theme="light"] .counter-block_one-text {
+    position: relative;
+    font-size: 20px;
+    margin-top: 0px;
+    color: var(--light-text-secondary) !important; /* Muted dark text for light theme */
+    text-transform: capitalize;
+}
+
+/* Contact Column */
+[data-theme="light"] .stats-one_contact-column {
+    padding: 0px 0px;
+    float: left;
+}
+
+[data-theme="light"] .stats-one .stats-one_contact-column {
+    position: relative;
+}
+
+/* FIXED: Contact Inner - Keep Original Gradient */
+[data-theme="light"] .stats-one_contact-inner {
+    position: relative;
+    padding: 35px 35px;
+    background: var(--main-color);
+    background: linear-gradient(to top, var(--main-color) 0%, var(--color-two) 100%);
+}
+
+/* FIXED: Contact Content - Light Theme */
+[data-theme="light"] .stats-one_contact-content {
+    position: relative;
+    padding: 19px 30px 19px 80px;
+    background-color: var(--light-bg-secondary); /* Light background for content */
+}
+
+/* FIXED: Contact Icon - Light Theme */
+[data-theme="light"] .stats-one_contact-icon {
+    position: absolute;
+    left: 25px;
+    top: 40px;
+    font-size: 34px;
+    line-height: 1em;
+    color: var(--main-color) !important; /* Main color icon for light theme */
+}
+
+/* FIXED: Contact Heading - Light Theme */
+[data-theme="light"] .stats-one_contact-content h3 {
+    position: relative;
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--light-text-primary) !important; /* Dark text for light theme */
+    text-transform: uppercase;
+}
+
+/* FIXED: Contact Description - Light Theme */
+[data-theme="light"] .stats-one_contact-content .text {
+    position: relative;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--light-text-secondary) !important; /* Muted dark text for light theme */
+    text-transform: capitalize;
+}
+
+/* FIXED: Contact Link Hover - Light Theme */
+[data-theme="light"] .stats-one_contact-content a {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+[data-theme="light"] .stats-one_contact-content a:hover h3 {
+    color: var(--main-color) !important;
+}
+
+[data-theme="light"] .stats-one_contact-content a:hover .stats-one_contact-icon {
+    color: var(--color-two) !important;
+    transform: scale(1.1);
+}
+
+/* Section Title - Light Theme */
+[data-theme="light"] .stats-one .sec-title {
+    margin-bottom: 60px;
+}
+
+[data-theme="light"] .stats-one .sec-title_heading {
+    color: var(--light-text-primary) !important;
+    font-weight: 700;
+    text-shadow: none;
+}
+
+[data-theme="light"] .stats-one .sec-title_icon {
+    opacity: 0.8;
+    filter: brightness(0.7) contrast(1.2);
+}
+
+/* Mobile Responsiveness - Keep Original Behavior */
+@media (max-width: 1200px) {
+    [data-theme="light"] .counter-block_one-inner {
+        padding: 30px 40px;
+    }
+    
+    [data-theme="light"] .counter-block_one-counter {
+        font-size: 65px;
+    }
+    
+    [data-theme="light"] .counter-block_one-text {
+        font-size: 18px;
+    }
+    
+    [data-theme="light"] .stats-one_contact-content h3 {
+        font-size: 26px;
+    }
+    
+    [data-theme="light"] .stats-one_contact-content .text {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 992px) {
+    [data-theme="light"] .counter-block_one-inner {
+        padding: 25px 30px;
+    }
+    
+    [data-theme="light"] .counter-block_one-counter {
+        font-size: 55px;
+    }
+    
+    [data-theme="light"] .counter-block_one-text {
+        font-size: 16px;
+    }
+    
+    [data-theme="light"] .stats-one_contact_inner {
+        padding: 25px 25px;
+    }
+    
+    [data-theme="light"] .stats-one_contact-content {
+        padding: 15px 25px 15px 70px;
+    }
+    
+    [data-theme="light"] .stats-one_contact-icon {
+        left: 20px;
+        top: 35px;
+        font-size: 30px;
+    }
+    
+    [data-theme="light"] .stats-one_contact_content h3 {
+        font-size: 24px;
+    }
+    
+    [data-theme="light"] .stats-one_contact_content .text {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    [data-theme="light"] .counter-block_one-inner {
+        padding: 20px 25px;
+        text-align: center;
+    }
+    
+    [data-theme="light"] .counter-block_one-counter {
+        font-size: 45px;
+    }
+    
+    [data-theme="light"] .counter-block_one-text {
+        font-size: 15px;
+    }
+    
+    [data-theme="light"] .stats-one_contact-content {
+        padding: 12px 20px 12px 60px;
+        text-align: left;
+    }
+    
+    [data-theme="light"] .stats-one_contact-icon {
+        left: 15px;
+        top: 30px;
+        font-size: 26px;
+    }
+    
+    [data-theme="light"] .stats-one_contact-content h3 {
+        font-size: 20px;
+    }
+    
+    [data-theme="light"] .stats-one_contact-content .text {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    [data-theme="light"] .stats-one {
+        padding: 80px 0px 80px;
+    }
+    
+    [data-theme="light"] .counter-block_one-inner {
+        padding: 15px 20px;
+    }
+    
+    [data-theme="light"] .counter-block_one-counter {
+        font-size: 40px;
+    }
+    
+    [data-theme="light"] .counter-block_one-text {
+        font-size: 14px;
+    }
+    
+    [data-theme="light"] .stats-one_contact-inner {
+        padding: 20px 20px;
+    }
+    
+    [data-theme="light"] .stats-one_contact-content {
+        padding: 10px 15px 10px 55px;
+    }
+    
+    [data-theme="light"] .stats-one_contact-icon {
+        left: 12px;
+        top: 25px;
+        font-size: 24px;
+    }
+    
+    [data-theme="light"] .stats-one_contact-content h3 {
+        font-size: 18px;
+    }
+    
+    [data-theme="light"] .stats-one_contact-content .text {
+        font-size: 13px;
+    }
+}
+
+/* Remove animation conflicts */
+[data-theme="light"] .counter-block_one-inner,
+[data-theme="light"] .stats-one_contact_inner {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+}
+
+/* High contrast mode - Enhanced */
+@media (prefers-contrast: high) {
+    [data-theme="light"] .stats-one .inner-container {
+        border: 2px solid var(--light-text-primary);
+    }
+    
+    [data-theme="light"] .counter-block_one_inner {
+        border-right: 2px solid var(--light-text-primary);
+        border-bottom: 2px solid var(--light-text-primary);
+    }
+    
+    [data-theme="light"] .counter-block_one-counter,
+    [data-theme="light"] .counter-block_one-text,
+    [data-theme="light"] .stats-one_contact_content h3,
+    [data-theme="light"] .stats-one_contact_content .text {
+        font-weight: 700 !important;
+        color: #000 !important;
+    }
+}
+
+/* ====================================================================
+   Awards Section Light Theme (FIXED Color Contrast)
+   ==================================================================== */
+
+/* Awards Section Background - Light Theme */
+[data-theme="light"] .awards-one {
+    position: relative;
+    padding: 100px 0px 100px;
+    background-color: var(--light-bg-primary);
+}
+
+[data-theme="light"] .awards-one.style-two {
+    padding-top: 0px;
+    background: none;
+}
+
+/* Awards Block */
+[data-theme="light"] .awards-block_one {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+/* Awards Block Inner - Light Theme */
+[data-theme="light"] .awards-block_one-inner {
+    position: relative;
+    padding: 10px 10px;
+    min-height: 122px;
+    border: 1px solid rgba(var(--light-text-primary-rgb), 0.2);
+    background-color: var(--light-bg-secondary);
+}
+
+/* Scale Hover Effect - Light Theme */
+[data-theme="light"] .awards-block_one-inner:before {
+    position: absolute;
+    content: '';
+    left: -1px;
+    top: -1px;
+    right: -1px;
+    bottom: -1px;
+    opacity: 0;
+    transform: scale(1, 0.2);
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+    background: var(--main-color);
+    background: linear-gradient(to top, var(--main-color) 0%, var(--color-two) 100%);
+}
+
+[data-theme="light"] .awards-block_one-inner:hover::before {
+    opacity: 1;
+    transform: scale(1, 1);
+}
+
+/* Awards Content */
+[data-theme="light"] .awards-block_one-content {
+    position: relative;
+    padding-top: 25px;
+    padding-left: 125px;
+    z-index: 2;
+}
+
+/* FIXED: Award Number Box - Better Contrast */
+[data-theme="light"] .awards-block_one-number {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100px;
+    height: 100px;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 98px;
+    text-align: center;
+    display: inline-block;
+    color: var(--white-color) !important; /* WHITE text for better contrast */
+    background-color: var(--light-text-primary) !important; /* DARK background */
+    border: 1px solid var(--light-text-primary);
+    z-index: 2;
+    transition: all 500ms ease;
+}
+
+[data-theme="light"] .awards-block_one-inner:hover .awards-block_one-number {
+    color: var(--white-color) !important; /* Keep WHITE text */
+    background-color: rgba(0, 0, 0, 0.3) !important; /* Semi-transparent on hover */
+    border-color: var(--white-color);
+}
+
+/* FIXED: Award Title - Better Contrast */
+[data-theme="light"] .awards-block_one-title {
+    position: relative;
+    font-weight: 600; /* Increased weight for better visibility */
+    color: #2c2c2c !important; /* DARKER text for better contrast */
+    text-transform: uppercase;
+    z-index: 2;
+    transition: color 500ms ease;
+    font-size: 24px; /* Slightly larger for better readability */
+}
+
+[data-theme="light"] .awards-block_one-inner:hover .awards-block_one-title {
+    color: var(--white-color) !important; /* WHITE text on hover */
+}
+
+/* FIXED: Award Span - Better Contrast */
+[data-theme="light"] .awards-block_one-title span {
+    position: relative;
+    font-size: 17px;
+    font-weight: 500;
+    top: -5px;
+    opacity: 0;
+    margin-left: 10px;
+    color: #666666 !important; /* MEDIUM GRAY for better visibility */
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+}
+
+[data-theme="light"] .awards-block_one-inner:hover .awards-block_one_title span {
+    opacity: 1;
+    color: rgba(var(--white-color-rgb), 0.9) !important; /* BRIGHT white on hover */
+}
+
+/* FIXED: Award Arrow - Complete Fix */
+[data-theme="light"] .awards-block_one-arrow {
+    position: absolute;
+    right: 25px;
+    top: 25px;
+    z-index: 2;
+    font-size: 44px;
+    line-height: 1em;
+    color: #2c2c2c !important; /* Dark arrow for light theme */
+    transition: all 500ms ease;
+    font-weight: normal;
+    /* Fix potential icon issues */
+    font-family: inherit;
+    display: block;
+    width: auto;
+    height: auto;
+    opacity: 1;
+    visibility: visible;
+    transform: none; /* Reset any transforms */
+}
+
+[data-theme="light"] .awards-block_one-inner:hover .awards-block_one-arrow {
+    color: var(--white-color) !important; /* White arrow on hover */
+    transform: translateX(5px) !important; /* Only apply movement on hover */
+    opacity: 1;
+    visibility: visible;
+}
+
+/* If using Font Awesome icons */
+[data-theme="light"] .awards-block_one-arrow i {
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+/* If using SVG icons */
+[data-theme="light"] .awards-block_one-arrow svg {
+    width: 44px;
+    height: 44px;
+    fill: currentColor;
+    stroke: currentColor;
+}
+
+/* If the arrow is a pseudo-element */
+[data-theme="light"] .awards-block_one-arrow::before,
+[data-theme="light"] .awards-block_one-arrow::after {
+    color: inherit;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Ensure arrow stays above gradient overlay */
+[data-theme="light"] .awards-block_one-arrow {
+    z-index: 5 !important;
+}
+
+/* Fix for specific arrow characters */
+[data-theme="light"] .awards-block_one-arrow {
+    /* If it's using Unicode arrow */
+    content: "→"; /* fallback */
+}
+
+/* Mobile fixes */
+@media (max-width: 768px) {
+    [data-theme="light"] .awards-block_one-arrow {
+        font-size: 36px;
+        right: 15px;
+        top: 15px;
+        z-index: 5 !important;
+    }
+}
+
+@media (max-width: 576px) {
+    [data-theme="light"] .awards-block_one-arrow {
+        font-size: 32px;
+        right: 12px;
+        top: 12px;
+        z-index: 5 !important;
+    }
+}
