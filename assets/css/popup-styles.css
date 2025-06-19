@@ -23,18 +23,16 @@
     height: 100%;
     background: rgba(var(--black-color-rgb), 0.85);
     backdrop-filter: blur(8px);
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    z-index: 999999; /* Increase z-index */
+    display: none; /* Add this line */
+    pointer-events: none; /* Disable interaction when hidden */
 }
 
 .popup-overlay.active {
+    display: flex; /* Change from visibility to display */
     opacity: 1;
     visibility: visible;
+    pointer-events: auto; /* Enable interaction when active */
 }
 
 /* Popup Container - Rectangle Shape - No Scroll */
@@ -53,6 +51,7 @@
     border: 2px solid var(--main-color);
     display: flex;
     flex-direction: column;
+    z-index: 1000000;
 }
 
 .popup-overlay.active .popup-container {

@@ -60,24 +60,28 @@ class EnquiryPopup {
     }
     
     showPopup() {
+        // Restore DOM presence
+        this.popup.style.display = 'flex';
+        this.popup.style.pointerEvents = 'auto';
+        this.popup.style.zIndex = '9999';
+        
         if (!sessionStorage.getItem('popupShown')) {
-            this.popup.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            sessionStorage.setItem('popupShown', 'true');
+            requestAnimationFrame(() => {
+                this.popup.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                sessionStorage.setItem('popupShown', 'true');
+            });
             
-            // Hide any existing messages
             this.hideMessages();
-            
-            // Trigger animation
-            const container = this.popup.querySelector('.popup-container');
-            setTimeout(() => {
-                container.style.visibility = 'visible';
-            }, 100);
         }
     }
     
     showPopupFromButton() {
-        // Add click animation to button
+        // Restore DOM presence
+        this.popup.style.display = 'flex';
+        this.popup.style.pointerEvents = 'auto';
+        this.popup.style.zIndex = '9999';
+        
         if (this.enquireBtn) {
             this.enquireBtn.classList.add('clicked');
             setTimeout(() => {
@@ -85,23 +89,25 @@ class EnquiryPopup {
             }, 300);
         }
         
-        // Show popup regardless of session storage
-        this.popup.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        requestAnimationFrame(() => {
+            this.popup.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
         
-        // Hide any existing messages
         this.hideMessages();
-        
-        // Trigger animation
-        const container = this.popup.querySelector('.popup-container');
-        setTimeout(() => {
-            container.style.visibility = 'visible';
-        }, 100);
     }
     
     hidePopup() {
+        // Start hiding animation
         this.popup.classList.remove('active');
         document.body.style.overflow = '';
+        
+        // After animation completes, completely remove from DOM flow
+        setTimeout(() => {
+            this.popup.style.display = 'none';
+            this.popup.style.pointerEvents = 'none';
+            this.popup.style.zIndex = '-1';
+        }, 400);
         
         // Hide messages when closing
         this.hideMessages();

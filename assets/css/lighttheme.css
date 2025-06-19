@@ -566,6 +566,7 @@
     cursor: pointer;
     -webkit-animation: icon-bounce 0.8s ease-out infinite;
     animation: icon-bounce 0.8s ease-out infinite;
+        filter: invert(1);
 }
 
 /* ====================================================================
@@ -669,7 +670,9 @@
 [data-theme="light"] .gallery-one {
     position: relative;
     padding: 100px 0px 70px;
-    background-color: var(--light-bg-primary); /* Light equivalent of color-four */
+    background-color: var(--light-bg-primary); 
+    /* Light equivalent of color-four */
+        /* filter: invert(1); */
 }
 
 [data-theme="light"] .gallery-block_one {
@@ -718,6 +721,7 @@
     position: relative;
     overflow: hidden;
     margin-bottom: 25px;
+
 }
 
 [data-theme="light"] .gallery-block_one-inner:hover .gallery-block_one-image:before {
@@ -1051,6 +1055,7 @@
 [data-theme="light"] .gallery-one {
     background: var(--light-bg-primary);
     position: relative;
+    
 }
 
 /* Gallery Block Light Theme */
