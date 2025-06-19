@@ -1,5 +1,4 @@
 
-<!-- Main Header -->
 <header class="main-header">
     
     <!-- Header Lower -->
@@ -9,7 +8,14 @@
                 <div class="d-flex justify-content-between align-items-center flex-wrap">
                     
                     <div class="logo-box">
-                        <div class="logo"><a href="index.php"><img src="assets/images/logo.png" alt="" title=""></a></div>
+                        <div class="logo">
+                            <a href="index.php">
+                                <!-- Dark theme logo -->
+                                <img src="assets/images/logo.png" alt="Logo" title="Logo" class="theme-logo dark-logo">
+                                <!-- Light theme logo -->
+                                <img src="assets/images/logo2.png"  alt="Logo" title="Logo" class="theme-logo light-logo">
+                            </a>
+                        </div>
                     </div>
                     
                     <div class="nav-outer d-flex flex-wrap">
@@ -63,7 +69,14 @@
         <div class="close-btn"><span class="icon fa-solid fa-xmark fa-fw"></span></div>
         
         <nav class="menu-box">
-            <div class="nav-logo"><a href="index.php"><img src="assets/images/mobile-logo.png" alt="" title=""></a></div>
+            <div class="nav-logo">
+                <a href="index.php">
+                    <!-- Dark theme mobile logo -->
+                    <img src="assets/images/mobile-logo.png" alt="Logo" title="Logo" class="theme-logo dark-logo">
+                    <!-- Light theme mobile logo -->
+                    <img src="assets/images/logo2.jpg" alt="Logo" title="Logo" class="theme-logo light-logo">
+                </a>
+            </div>
             <div class="menu-outer"><!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header--></div>
         </nav>
     </div>
@@ -71,3 +84,51 @@
 
 </header>
 <!-- End Main Header -->
+
+<style>
+    /* Logo theme switching styles */
+    .theme-logo {
+        transition: opacity 0.3s ease;
+    }
+    
+    /* Default state - hide light logo */
+    .light-logo {
+        display: none;
+    }
+    
+    /* Light theme - show light logo, hide dark logo */
+    [data-theme="light"] .light-logo {
+        display: inline-block;
+    }
+    
+    [data-theme="light"] .dark-logo {
+        display: none;
+    }
+</style>
+
+<script>
+    // Add listener for theme changes
+    window.addEventListener('themeChanged', function(e) {
+        updateLogos(e.detail.theme);
+    });
+    
+    // Update logos on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+        updateLogos(currentTheme);
+    });
+    
+    // Function to update logos based on theme
+    function updateLogos(theme) {
+        const darkLogos = document.querySelectorAll('.dark-logo');
+        const lightLogos = document.querySelectorAll('.light-logo');
+        
+        if (theme === 'light') {
+            darkLogos.forEach(logo => logo.style.display = 'none');
+            lightLogos.forEach(logo => logo.style.display = 'inline-block');
+        } else {
+            darkLogos.forEach(logo => logo.style.display = 'inline-block');
+            lightLogos.forEach(logo => logo.style.display = 'none');
+        }
+    }
+</script>
