@@ -2,96 +2,128 @@
 // filepath: c:\xampp\htdocs\new4\backend\login-process.php
 
 session_start();
+
+// Only allow POST requests
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: login.php');
+    exit();
+}
+
 require_once 'db.php';
 
-// Rate limiting - max 5 attempts per IP per 15 minutes
-$max_attempts = 5;
-$lockout_time = 15 * 60; // 15 minutes
+$username = trim($_POST['username'] ?? '');
+$password = $_POST['password'] ?? '';
+$remember_me = isset($_POST['remember_me']) && $_POST['remember_me'] === '1';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username'] ?? '');
-    $password = trim($_POST['password'] ?? '');
-    $remember_me = isset($_POST['remember_me']) ? true : false;
-    $ip_address = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
-    $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
-    
-    // Check rate limiting
-    $stmt = $conn->prepare("SELECT COUNT(*) as attempts FROM login_attempts WHERE ip_address = ? AND success = 0 AND attempted_at > DATE_SUB(NOW(), INTERVAL ? SECOND)");
-    $stmt->bind_param("si", $ip_address, $lockout_time);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $attempts = $result->fetch_assoc()['attempts'];
-    $stmt->close();
-    
-    if ($attempts >= $max_attempts) {
-        // Log the blocked attempt
-        log_activity(null, 'login_blocked', 'Too many failed attempts');
-        
-        $_SESSION['login_error'] = "Too many failed login attempts. Please try again in 15 minutes.";
-        header('Location: login.php');
-        exit();
-    }
-    
-    // Validate input
-    if (empty($username) || empty($password)) {
-        log_activity(null, 'login_failed', 'Empty username or password');
-        $_SESSION['login_error'] = 'Please enter both username and password';
-        header('Location: login.php');
-        exit();
-    }
-    
-    // Check against database
-    $stmt = $conn->prepare("SELECT id, username, password_hash, full_name, role, status FROM admin_users WHERE username = ? AND status = 'active' LIMIT 1");
+// Basic validation
+if (empty($username) || empty($password)) {
+    $_SESSION['login_error'] = 'Please enter both username and password.';
+    header('Location: login.php');
+    exit();
+}
+
+// Rate limiting - prevent brute force attacks
+$ip_address = $_SERVER['REMOTE_ADDR'];
+$rate_limit_key = "login_attempts_" . $ip_address;
+
+// Check if there's an existing rate limit (you'd implement this with Redis/Memcached in production)
+// For now, we'll use a simple session-based approach
+
+if (!isset($_SESSION['login_attempts'])) {
+    $_SESSION['login_attempts'] = 0;
+    $_SESSION['last_attempt_time'] = time();
+}
+
+// Reset attempts if more than 15 minutes have passed
+if (time() - $_SESSION['last_attempt_time'] > 900) {
+    $_SESSION['login_attempts'] = 0;
+}
+
+// Check if too many attempts
+if ($_SESSION['login_attempts'] >= 5) {
+    $_SESSION['login_error'] = 'Too many failed login attempts. Please try again in 15 minutes.';
+    header('Location: login.php');
+    exit();
+}
+
+try {
+    // Prepare and execute the query
+    $stmt = $conn->prepare("SELECT id, username, password_hash, full_name, email, role, status, last_login FROM admin_users WHERE username = ? AND status = 'active'");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+    $stmt->close();
     
-    if ($user = $result->fetch_assoc()) {
-        if (password_verify($password, $user['password_hash'])) {
-            // Login successful
-            $_SESSION['admin_logged_in'] = true;
-            $_SESSION['admin_id'] = $user['id'];
-            $_SESSION['admin_username'] = $user['username'];
-            $_SESSION['admin_full_name'] = $user['full_name'];
-            $_SESSION['admin_role'] = $user['role'];
-            $_SESSION['login_time'] = time();
+    // Verify credentials
+    if ($user && password_verify($password, $user['password_hash'])) {
+        // Reset login attempts on successful login
+        $_SESSION['login_attempts'] = 0;
+        unset($_SESSION['last_attempt_time']);
+        
+        // Set session variables
+        $_SESSION['admin_logged_in'] = true;
+        $_SESSION['admin_id'] = $user['id'];
+        $_SESSION['admin_username'] = $user['username'];
+        $_SESSION['admin_full_name'] = $user['full_name'];
+        $_SESSION['admin_role'] = $user['role'];
+        $_SESSION['admin_email'] = $user['email'];
+        $_SESSION['login_time'] = time();
+        
+        // Update last login information
+        $update_stmt = $conn->prepare("UPDATE admin_users SET last_login = NOW(), last_login_ip = ?, login_count = login_count + 1 WHERE id = ?");
+        $update_stmt->bind_param("si", $ip_address, $user['id']);
+        $update_stmt->execute();
+        $update_stmt->close();
+        
+        // Handle "Remember Me" functionality
+        if ($remember_me) {
+            // Generate a secure random token
+            $token = bin2hex(random_bytes(32));
+            $expires = time() + (30 * 24 * 60 * 60); // 30 days
             
-            // Update last login
-            $update_stmt = $conn->prepare("UPDATE admin_users SET last_login = NOW(), last_login_ip = ?, login_count = login_count + 1 WHERE id = ?");
-            $update_stmt->bind_param("si", $ip_address, $user['id']);
-            $update_stmt->execute();
-            $update_stmt->close();
+            // Store token in database
+            $token_stmt = $conn->prepare("INSERT INTO admin_remember_tokens (user_id, token_hash, expires_at, ip_address) VALUES (?, ?, FROM_UNIXTIME(?), ?)");
+            $token_hash = password_hash($token, PASSWORD_DEFAULT);
+            $token_stmt->bind_param("isss", $user['id'], $token_hash, $expires, $ip_address);
+            $token_stmt->execute();
+            $token_stmt->close();
             
-            // Set remember me cookie
-            if ($remember_me) {
-                $cookie_value = base64_encode($user['id'] . ':' . hash('sha256', $user['password_hash']));
-                setcookie('remember_admin', $cookie_value, time() + (30 * 24 * 60 * 60), '/', '', true, true); // 30 days
-            }
-            
-            // Log successful login
-            log_activity($user['id'], 'login_success', 'Successful login');
-            
-            // Clean old failed attempts for this IP
-            $clean_stmt = $conn->prepare("DELETE FROM login_attempts WHERE ip_address = ? AND success = 0");
-            $clean_stmt->bind_param("s", $ip_address);
-            $clean_stmt->execute();
-            $clean_stmt->close();
-            
-            header('Location: dashboard.php');
-            exit();
+            // Set secure cookie
+            setcookie('remember_token', $token, [
+                'expires' => $expires,
+                'path' => '/',
+                'domain' => '',
+                'secure' => isset($_SERVER['HTTPS']),
+                'httponly' => true,
+                'samesite' => 'Strict'
+            ]);
         }
+        
+        // Log successful login
+        error_log("Successful admin login: " . $username . " from IP: " . $ip_address);
+        
+        // Redirect to dashboard
+        header('Location: dashboard.php');
+        exit();
+        
+    } else {
+        // Increment failed attempts
+        $_SESSION['login_attempts']++;
+        $_SESSION['last_attempt_time'] = time();
+        
+        // Log failed login attempt
+        error_log("Failed admin login attempt: " . $username . " from IP: " . $ip_address);
+        
+        // Generic error message to prevent username enumeration
+        $_SESSION['login_error'] = 'Invalid username or password. Please try again.';
+        header('Location: login.php');
+        exit();
     }
     
-    // Login failed
-    log_activity(null, 'login_failed', "Failed login attempt for username: $username");
-    
-    $stmt->close();
-    $_SESSION['login_error'] = 'Invalid username or password';
-    header('Location: login.php');
-    exit();
-    
-} else {
-    // Invalid request method
+} catch (Exception $e) {
+    error_log("Login error: " . $e->getMessage());
+    $_SESSION['login_error'] = 'A system error occurred. Please try again later.';
     header('Location: login.php');
     exit();
 }
