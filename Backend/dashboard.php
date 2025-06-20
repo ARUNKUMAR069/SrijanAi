@@ -1,4 +1,5 @@
 <?php
+
 // filepath: c:\xampp\htdocs\new4\backend\dashboard.php
 
 session_start();
@@ -35,6 +36,6 @@ include 'components/dashboard/dashboard-logic.php';
         <?php include 'components/dashboard/modal.php'; ?>
     </div>
     
-    <script src="assets/js/dashboard-modern.js"></script>
+    <script src="assets/js/modern-dashboard.js"></script>
 </body>
 </html>
