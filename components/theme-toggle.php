@@ -28,4 +28,4 @@
 </div>
 
 <!-- Include the theme JavaScript -->
-<script src="assets/js/theme.js"></script>
+<!-- <script src="assets/js/theme.js"></script> -->

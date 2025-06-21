@@ -24,7 +24,7 @@ require_once 'includes/header.php';
 
     <?php
     // Stats Component
-    if (file_exists('components/about/stats.php')) {
+    if (file_exists('components/home/stats.php')) {
         include 'components/about/stats.php';
     }
     ?>

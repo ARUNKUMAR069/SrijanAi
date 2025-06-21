@@ -9,7 +9,7 @@
         <!-- Content Column -->
         <div class="banner-one_content">
             <div class="banner-one_content-inner">
-                <h1 class="banner-one_heading">SRIJAN AI<br>INNOVATIONS</h1>
+                <h1 class="banner-one_heading responsive-heading">SRIJAN AI<br>INNOVATIONS</h1>
                 <div class="lower-box d-flex justify-content-between align-items-center flex-wrap">
                     <div class="banner-one_text">Our visionary team crafts <br> transformative experiences</div>
                     <div class="banner-one_text-two">Enhancing potential and <br> driving prosperity.</div>
@@ -21,3 +21,49 @@
         </div>
     </div>
 </section>
+
+<style>
+/* ====================================================================
+   Banner Heading Mobile Responsive Styles ONLY
+   ==================================================================== */
+
+/* Mobile Only - Small Tablets and Large Phones */
+@media (max-width: 767px) {
+    .banner-one_heading.responsive-heading {
+        font-size: 3rem !important;
+        line-height: 1.2 !important;
+    }
+}
+
+/* Mobile Only - Small Mobile Phones */
+@media (max-width: 575px) {
+    .banner-one_heading.responsive-heading {
+        font-size: 2.5rem !important;
+        line-height: 1.3 !important;
+    }
+}
+
+/* Mobile Only - Extra Small Mobile Phones */
+@media (max-width: 400px) {
+    .banner-one_heading.responsive-heading {
+        font-size: 2.2rem !important;
+        line-height: 1.35 !important;
+    }
+}
+
+/* Mobile Only - Very Small Screens */
+@media (max-width: 320px) {
+    .banner-one_heading.responsive-heading {
+        font-size: 1.8rem !important;
+        line-height: 1.4 !important;
+    }
+}
+
+/* Mobile Only - Landscape Orientation */
+@media (max-height: 500px) and (orientation: landscape) and (max-width: 767px) {
+    .banner-one_heading.responsive-heading {
+        font-size: 2rem !important;
+        line-height: 1.2 !important;
+    }
+}
+</style>

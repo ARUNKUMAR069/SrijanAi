@@ -27,12 +27,7 @@ require_once 'includes/header.php';
     }
     ?>
 
-    <?php
-    // Journal Section
-    if (file_exists('components/home/journal.php')) {
-        include 'components/home/journal.php';
-    }
-    ?>
+    
 
     <?php
     // Testimonials Section
@@ -41,12 +36,7 @@ require_once 'includes/header.php';
     }
     ?>
 
-    <?php
-    // Stats Section
-    if (file_exists('components/home/stats.php')) {
-        include 'components/home/stats.php';
-    }
-    ?>
+   
 
     <?php
     // Awards Section

@@ -1066,11 +1066,8 @@
 [data-theme="light"] .gallery-block_one-inner {
     background: var(--light-bg-secondary);
     border-radius: 16px;
-    overflow: hidden;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 
-        0 4px 20px rgba(0, 0, 0, 0.08),
-        0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     border: 1px solid var(--light-border);
     position: relative;
     /* Fix animation conflicts */
@@ -1082,9 +1079,8 @@
 
 [data-theme="light"] .gallery-block_one-inner:hover {
     transform: translateY(-5px) !important;
-    box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.12),
-        0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12),
+                0 4px 12px rgba(0, 0, 0, 0.08);
     border-color: rgba(var(--main-color-rgb), 0.3);
     background: var(--light-bg-primary);
 }
@@ -2072,12 +2068,12 @@ body:not(.theme-transitioning) .wow {
         font-size: 18px;
     }
     
-    [data-theme="light"] .stats-one_contact-content h3 {
-        font-size: 26px;
+    [data-theme="light"] .stats-one_contact_content h3 {
+        font-size: 24px;
     }
     
-    [data-theme="light"] .stats-one_contact-content .text {
-        font-size: 18px;
+    [data-theme="light"] .stats-one_contact_content .text {
+        font-size: 16px;
     }
 }
 
@@ -2182,11 +2178,11 @@ body:not(.theme-transitioning) .wow {
         font-size: 24px;
     }
     
-    [data-theme="light"] .stats-one_contact-content h3 {
+    [data-theme="light"] .stats-one_contact_content h3 {
         font-size: 18px;
     }
     
-    [data-theme="light"] .stats-one_contact-content .text {
+    [data-theme="light"] .stats-one_contact_content .text {
         font-size: 13px;
     }
 }
@@ -2422,5 +2418,258 @@ body:not(.theme-transitioning) .wow {
         right: 12px;
         top: 12px;
         z-index: 5 !important;
+    }
+}
+
+/* Light Theme - Achievement Images Section */
+.light-theme .achievement-images-section {
+    border-top-color: rgba(0, 0, 0, 0.10);
+}
+
+.light-theme .sec-title_heading-small {
+    color: var(--black-color);
+}
+
+.light-theme .achievement-image-inner {
+    border-color: rgba(0, 0, 0, 0.10);
+    background-color: var(--white-color);
+}
+
+.light-theme .achievement-image-inner:hover {
+    border-color: rgba(0, 0, 0, 0.30);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.light-theme .achievement-image-overlay {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0) 100%);
+}
+
+.light-theme .achievement-image-title {
+    color: var(--white-color);
+}
+
+.light-theme .achievement-image-desc {
+    color: rgba(255, 255, 255, 0.80);
+}
+
+/* ====================================================================
+   Light Theme Header - Complete Transparency Fix
+   ==================================================================== */
+
+/* Override ALL header backgrounds in light theme */
+[data-theme="light"] .main-header,
+[data-theme="light"] .main-header *:not(.logo):not(.logo *):not(.theme-logo) {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    backdrop-filter: none !important;
+}
+
+/* Only add background when header is fixed/sticky */
+[data-theme="light"] .main-header.fixed-header {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Light theme navigation - remove background conflicts */
+[data-theme="light"] .main-header .navigation,
+[data-theme="light"] .main-header .nav-outer,
+[data-theme="light"] .main-header .navbar-collapse {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* Light theme dropdown menus */
+[data-theme="light"] .main-header .navigation > li.dropdown ul {
+    background: var(--light-bg-primary) !important;
+    border: 1px solid var(--light-border) !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+/* ====================================================================
+   Mobile Menu Light Theme Fixes
+   ==================================================================== */
+
+[data-theme="light"] .mobile-menu {
+    background: var(--light-bg-primary) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+}
+
+[data-theme="light"] .mobile-menu .menu-box {
+    background: transparent !important;
+}
+
+[data-theme="light"] .mobile-menu .nav-logo {
+    border-bottom-color: var(--light-border) !important;
+}
+
+[data-theme="light"] .mobile-menu .navigation > li {
+    border-bottom-color: var(--light-border) !important;
+}
+
+[data-theme="light"] .mobile-menu .navigation > li > a {
+    color: var(--light-text-primary) !important;
+}
+
+[data-theme="light"] .mobile-menu .navigation > li > a:hover {
+    background: var(--light-bg-secondary) !important;
+    color: var(--main-color) !important;
+}
+
+[data-theme="light"] .mobile-menu .navigation > li.dropdown > .dropdown-btn {
+    color: var(--light-text-primary) !important;
+}
+
+[data-theme="light"] .mobile-menu .navigation > li.dropdown ul {
+    background: var(--light-bg-secondary) !important;
+}
+
+[data-theme="light"] .mobile-menu .navigation > li.dropdown ul li a {
+    color: var(--light-text-secondary) !important;
+    border-bottom-color: var(--light-border) !important;
+}
+
+[data-theme="light"] .mobile-menu .navigation > li.dropdown ul li a:hover {
+    color: var(--main-color) !important;
+    background: var(--light-bg-tertiary) !important;
+}
+
+[data-theme="light"] .mobile-menu .close-btn span {
+    color: var(--light-text-primary) !important;
+}
+
+/* ====================================================================
+   Remove Conflicting Styles - Priority Override
+   ==================================================================== */
+
+/* Remove any conflicting header styles from other CSS files */
+[data-theme="light"] .main-header {
+    background-image: none !important;
+    background-attachment: initial !important;
+    background-size: initial !important;
+    background-repeat: initial !important;
+    background-position: initial !important;
+}
+
+/* Ensure mobile toggler visibility */
+@media (max-width: 991px) {
+    [data-theme="light"] .mobile-nav-toggler {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    [data-theme="light"] .main-header .nav-outer .main-menu {
+        display: none !important;
+    }
+}
+
+/* Force proper z-index in light theme */
+[data-theme="light"] .main-header {
+    z-index: 999 !important;
+}
+
+[data-theme="light"] .mobile-menu {
+    z-index: 9999 !important;
+}
+
+/* Remove any gradient overlays in light theme */
+[data-theme="light"] .main-header::before,
+[data-theme="light"] .main-header::after,
+[data-theme="light"] .header-lower::before,
+[data-theme="light"] .header-lower::after {
+    display: none !important;
+}
+
+/* Add to lighttheme.css - Mobile Header Theme Fixes */
+
+/* ====================================================================
+   Light Theme Mobile Header - Complete Fix
+   ==================================================================== */
+
+/* Force header transparency on mobile in light theme */
+@media (max-width: 991px) {
+    [data-theme="light"] .main-header,
+    [data-theme="light"] .main-header *:not(.logo):not(.logo *):not(.theme-logo):not(.mobile-nav-toggler):not(.mobile-nav-icon):not(.mobile-nav-icon *):not(.navbar-toggler):not(.navbar-toggler *) {
+        background: transparent !important;
+        background-color: transparent !important;
+        background-image: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        backdrop-filter: none !important;
+    }
+}
+
+/* FIXED: Mobile Hamburger - BLACK in Light Theme */
+[data-theme="light"] .mobile-nav-icon span {
+    background-color: #000000 !important; /* Force black color */
+    box-shadow: none !important;
+}
+
+[data-theme="light"] .navbar-toggler .icon-bar {
+    background-color: #000000 !important; /* Force black color */
+    box-shadow: none !important;
+}
+
+/* Ensure visibility */
+@media (max-width: 991px) {
+    [data-theme="light"] .mobile-nav-toggler,
+    [data-theme="light"] .navbar-toggler {
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: flex !important;
+        pointer-events: auto !important;
+    }
+    
+    [data-theme="light"] .mobile-nav-icon span {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    [data-theme="light"] .navbar-toggler .icon-bar {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+}
+
+/* Light theme mobile navigation text */
+[data-theme="light"] .main-header .navigation > li > a {
+    color: var(--light-text-primary) !important;
+}
+
+[data-theme="light"] .main-header .navigation > li > a:hover {
+    color: var(--main-color) !important;
+}
+
+/* Light theme mobile menu improvements */
+[data-theme="light"] .mobile-menu {
+    background: var(--light-bg-primary) !important;
+    border-right: 2px solid var(--light-border);
+}
+
+[data-theme="light"] .mobile-menu .menu-backdrop {
+    background: rgba(0, 0, 0, 0.6) !important;
+}
+
+[data-theme="light"] .mobile-menu .navigation > li > a {
+    color: var(--light-text-primary) !important;
+    border-bottom-color: var(--light-border) !important;
+}
+
+[data-theme="light"] .mobile-menu .navigation > li > a:hover {
+    color: var(--main-color) !important;
+    background: rgba(var(--main-color-rgb), 0.05) !important;
+}
+
+/* High contrast support */
+@media (prefers-contrast: high) {
+    [data-theme="light"] .mobile-nav-icon span,
+    [data-theme="light"] .navbar-toggler .icon-bar {
+        background-color: #000000 !important;
+        border: 1px solid #ffffff;
     }
 }

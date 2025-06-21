@@ -1,4 +1,4 @@
-					(function($) {
+(function($) {
             "use strict";
             
             //Hide Loading Box (Preloader)
@@ -400,5 +400,270 @@
             });
 
         })(window.jQuery);
+
+// Enhanced Mobile Menu Handler
+(function($) {
+    "use strict";
+    
+    // Mobile Navigation Enhanced
+    if ($('.mobile-menu').length) {
+        var mobileMenuContent = $('.main-header .nav-outer .main-menu').html();
+        $('.mobile-menu .menu-box .menu-outer').html(mobileMenuContent);
+        
+        // Add dropdown buttons to mobile menu
+        $('.mobile-menu .navigation > li.dropdown').each(function() {
+            if (!$(this).find('.dropdown-btn').length) {
+                $(this).append('<div class="dropdown-btn"><span class="fa fa-angle-down"></span></div>');
+            }
+        });
+        
+        // Enhanced dropdown functionality
+        $('.mobile-menu .navigation > li.dropdown > .dropdown-btn').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            var $parentLi = $(this).parent('li');
+            var $submenu = $parentLi.children('ul');
+            var isOpen = $parentLi.hasClass('open');
+            
+            // Close all other dropdowns
+            $('.mobile-menu .navigation > li.dropdown').not($parentLi).removeClass('open');
+            $('.mobile-menu .navigation > li.dropdown').not($parentLi).children('ul').slideUp(300);
+            
+            // Toggle current dropdown
+            if (isOpen) {
+                $parentLi.removeClass('open');
+                $submenu.slideUp(300);
+            } else {
+                $parentLi.addClass('open');
+                $submenu.slideDown(300);
+            }
+        });
+        
+        // Enhanced mobile menu toggle
+        $('.mobile-nav-toggler').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $('body').addClass('mobile-menu-visible');
+        });
+        
+        // Close mobile menu
+        $('.mobile-menu .menu-backdrop, .mobile-menu .close-btn').on('click', function(e) {
+            e.preventDefault();
+            closeMobileMenu();
+        });
+        
+        // Close on escape key
+        $(document).on('keydown', function(e) {
+            if (e.keyCode === 27 && $('body').hasClass('mobile-menu-visible')) {
+                closeMobileMenu();
+            }
+        });
+        
+        // Close on window resize
+        $(window).on('resize', function() {
+            if ($(window).width() > 991 && $('body').hasClass('mobile-menu-visible')) {
+                closeMobileMenu();
+            }
+        });
+        
+        function closeMobileMenu() {
+            $('body').removeClass('mobile-menu-visible');
+            $('.mobile-menu .navigation > li.dropdown').removeClass('open');
+            $('.mobile-menu .navigation > li.dropdown ul').slideUp(0);
+        }
+    }
+    
+    // Fix navbar collapse for Bootstrap compatibility
+    $('.navbar-toggler').on('click', function(e) {
+        e.preventDefault();
+        $('body').addClass('mobile-menu-visible');
+    });
+    
+    // Enhanced header scroll behavior
+    function enhancedHeaderStyle() {
+        if ($('.main-header').length) {
+            var windowpos = $(window).scrollTop();
+            var siteHeader = $('.main-header');
+            var scrollLink = $('.scroll-to-top');
+            var HeaderHeight = $('.main-header').height();
+            
+            if (windowpos >= HeaderHeight) {
+                siteHeader.addClass('fixed-header');
+                scrollLink.fadeIn(300);
+            } else {
+                siteHeader.removeClass('fixed-header');
+                scrollLink.fadeOut(300);
+            }
+        }
+    }
+    
+    // Run on scroll
+    $(window).on('scroll', function() {
+        enhancedHeaderStyle();
+    });
+    
+    // Run on load
+    $(window).on('load', function() {
+        enhancedHeaderStyle();
+    });
+    
+})(window.jQuery);
+
+// Enhanced Mobile Menu Handler with Theme Support
+(function($) {
+    "use strict";
+    
+    // Initialize mobile menu
+    function initMobileMenu() {
+        if ($('.mobile-menu').length) {
+            var mainMenuContent = $('.main-header .nav-outer .main-menu .navigation').html();
+            if (mainMenuContent) {
+                $('.mobile-menu .menu-box .menu-outer').html('<ul class="navigation">' + mainMenuContent + '</ul>');
+                
+                // Add dropdown buttons
+                $('.mobile-menu .navigation > li.dropdown').each(function() {
+                    if (!$(this).find('.dropdown-btn').length) {
+                        $(this).append('<div class="dropdown-btn"><span class="fa fa-angle-down"></span></div>');
+                    }
+                });
+            }
+        }
+    }
+    
+    // Enhanced dropdown functionality
+    function setupDropdowns() {
+        $('.mobile-menu .navigation > li.dropdown > .dropdown-btn').off('click').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            var $parentLi = $(this).parent('li');
+            var $submenu = $parentLi.children('ul');
+            var isOpen = $parentLi.hasClass('open');
+            
+            // Close all other dropdowns
+            $('.mobile-menu .navigation > li.dropdown').not($parentLi).removeClass('open');
+            $('.mobile-menu .navigation > li.dropdown').not($parentLi).children('ul').slideUp(300);
+            
+            // Toggle current dropdown
+            if (isOpen) {
+                $parentLi.removeClass('open');
+                $submenu.slideUp(300);
+            } else {
+                $parentLi.addClass('open');
+                $submenu.slideDown(300);
+            }
+        });
+    }
+    
+    // Open mobile menu
+    function openMobileMenu() {
+        $('body').addClass('mobile-menu-visible');
+        
+        // Add staggered animation
+        setTimeout(function() {
+            $('.mobile-menu .navigation > li').each(function(index) {
+                $(this).css({
+                    'animation-delay': (index * 0.05) + 's',
+                    'animation': 'slideInMenu 0.4s ease forwards'
+                });
+            });
+        }, 100);
+    }
+    
+    // Close mobile menu
+    function closeMobileMenu() {
+        $('body').removeClass('mobile-menu-visible');
+        $('.mobile-menu .navigation > li.dropdown').removeClass('open');
+        $('.mobile-menu .navigation > li.dropdown ul').slideUp(0);
+        
+        // Reset animations
+        $('.mobile-menu .navigation > li').css({
+            'animation': 'none',
+            'animation-delay': '0s'
+        });
+    }
+    
+    // Setup event listeners
+    function setupEventListeners() {
+        // Mobile togglers
+        $('.mobile-nav-toggler, .navbar-toggler').off('click').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openMobileMenu();
+        });
+        
+        // Close buttons
+        $('.mobile-menu .menu-backdrop, .mobile-menu .close-btn').off('click').on('click', function(e) {
+            e.preventDefault();
+            closeMobileMenu();
+        });
+        
+        // Escape key
+        $(document).off('keydown.mobilemenu').on('keydown.mobilemenu', function(e) {
+            if (e.keyCode === 27 && $('body').hasClass('mobile-menu-visible')) {
+                closeMobileMenu();
+            }
+        });
+        
+        // Window resize
+        $(window).off('resize.mobilemenu').on('resize.mobilemenu', function() {
+            if ($(window).width() > 991 && $('body').hasClass('mobile-menu-visible')) {
+                closeMobileMenu();
+            }
+        });
+        
+        // Orientation change
+        $(window).off('orientationchange.mobilemenu').on('orientationchange.mobilemenu', function() {
+            setTimeout(function() {
+                if ($(window).width() > 991 && $('body').hasClass('mobile-menu-visible')) {
+                    closeMobileMenu();
+                }
+            }, 500);
+        });
+    }
+    
+    // Initialize everything
+    function initializeMobileMenuSystem() {
+        initMobileMenu();
+        setupDropdowns();
+        setupEventListeners();
+    }
+    
+    // Run on DOM ready
+    $(document).ready(function() {
+        initializeMobileMenuSystem();
+    });
+    
+    // Listen for theme changes and reinitialize if needed
+    window.addEventListener('themeChanged', function() {
+        setTimeout(function() {
+            initializeMobileMenuSystem();
+        }, 100);
+    });
+    
+})(window.jQuery);
+
+// CSS animation for mobile menu items
+const mobileMenuStyles = `
+    @keyframes slideInMenu {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+`;
+
+// Inject styles
+if (!document.querySelector('#mobile-menu-styles')) {
+    const styleSheet = document.createElement('style');
+    styleSheet.id = 'mobile-menu-styles';
+    styleSheet.textContent = mobileMenuStyles;
+    document.head.appendChild(styleSheet);
+}
 
 

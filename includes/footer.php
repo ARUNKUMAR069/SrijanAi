@@ -60,6 +60,7 @@ $current_page = getCurrentPage();
     <!-- Homepage specific scripts -->
     <script src="assets/js/popup-script.js"></script>
     <script src="assets/js/theme.js"></script>
+   
     <?php endif; ?>
 
     <!-- IE9 Support -->

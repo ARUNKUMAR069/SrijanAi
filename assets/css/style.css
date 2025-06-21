@@ -1508,3 +1508,161 @@ a.backtop:hover {
 html {
     scroll-behavior: smooth; /* Enable smooth scrolling behavior for the whole page */
 }
+
+/*** 
+====================================================================
+    Achievement Images Section
+====================================================================
+***/
+
+.achievement-images-section {
+    position: relative;
+    margin-top: 80px;
+    padding-top: 50px;
+    border-top: 1px solid rgba(var(--white-color-rgb), 0.10);
+}
+
+.achievement-images-title {
+    margin-bottom: 50px;
+}
+
+.sec-title_heading-small {
+    position: relative;
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--white-color);
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.achievement-images-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    padding: 0px 15px;
+}
+
+.achievement-image-block {
+    position: relative;
+}
+
+.achievement-image-inner {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(var(--white-color-rgb), 0.10);
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+}
+
+.achievement-image-inner:hover {
+    border-color: rgba(var(--white-color-rgb), 0.30);
+    transform: translateY(-10px);
+}
+
+.achievement-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 250px;
+}
+
+.achievement-image-wrapper img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+}
+
+.achievement-image-inner:hover .achievement-image-wrapper img {
+    transform: scale(1.05);
+}
+
+.achievement-image-overlay {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    opacity: 0;
+    background: linear-gradient(to top, rgba(var(--black-color-rgb), 0.9) 0%, rgba(var(--black-color-rgb), 0.3) 50%, rgba(var(--black-color-rgb), 0) 100%);
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+}
+
+.achievement-image-inner:hover .achievement-image-overlay {
+    opacity: 1;
+}
+
+.achievement-image-content {
+    position: absolute;
+    left: 25px;
+    bottom: 25px;
+    right: 25px;
+    transform: translateY(30px);
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+}
+
+.achievement-image-inner:hover .achievement-image-content {
+    transform: translateY(0px);
+}
+
+.achievement-image-title {
+    position: relative;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--white-color);
+    text-transform: uppercase;
+}
+
+.achievement-image-desc {
+    position: relative;
+    font-size: 16px;
+    margin-bottom: 0px;
+    color: rgba(var(--white-color-rgb), 0.80);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .achievement-images-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+    
+    .achievement-image-wrapper {
+        height: 200px;
+    }
+    
+    .sec-title_heading-small {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .achievement-images-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .achievement-images-section {
+        margin-top: 50px;
+    }
+}
+
+
