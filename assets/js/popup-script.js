@@ -11,26 +11,50 @@ class EnquiryPopup {
         // API endpoint for form submission
         this.apiEndpoint = 'backend/enquiry-submit.php';
         
+        // State management
+        this.isVisible = false;
+        this.autoShowTimer = null;
+        
         this.init();
     }
     
     init() {
-        // Show popup after 3 seconds (auto popup)
-        setTimeout(() => {
-            if (!sessionStorage.getItem('popupShown')) {
+        // Auto-show popup after 3 seconds if not shown before
+        this.autoShowTimer = setTimeout(() => {
+            if (!sessionStorage.getItem('popupShown') && !this.isVisible) {
                 this.showPopup();
             }
         }, 3000);
         
         // Event listeners
-        this.closeBtn.addEventListener('click', () => this.hidePopup());
-        this.popup.addEventListener('click', (e) => {
-            if (e.target === this.popup) {
-                this.hidePopup();
-            }
-        });
+        this.setupEventListeners();
         
-        // Enquire Now Button Event
+        // Real-time validation
+        this.setupValidation();
+        
+        // Add animation classes
+        this.addAnimationClasses();
+        
+        // Ensure popup is initially hidden and removed from layout
+        this.hidePopupCompletely();
+    }
+    
+    setupEventListeners() {
+        // Close button
+        if (this.closeBtn) {
+            this.closeBtn.addEventListener('click', () => this.hidePopup());
+        }
+        
+        // Overlay click to close
+        if (this.popup) {
+            this.popup.addEventListener('click', (e) => {
+                if (e.target === this.popup) {
+                    this.hidePopup();
+                }
+            });
+        }
+        
+        // Enquire button
         if (this.enquireBtn) {
             this.enquireBtn.addEventListener('click', () => {
                 this.showPopupFromButton();
@@ -38,50 +62,110 @@ class EnquiryPopup {
         }
         
         // Form submission
-        this.form.addEventListener('submit', (e) => this.handleSubmit(e));
-        
-        // Real-time validation
-        this.setupValidation();
+        if (this.form) {
+            this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+        }
         
         // ESC key to close
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.popup.classList.contains('active')) {
+            if (e.key === 'Escape' && this.isVisible) {
                 this.hidePopup();
             }
         });
         
-        // Add animation classes
-        this.addAnimationClasses();
+        // Prevent accidental closure on popup container click
+        const container = this.popup?.querySelector('.popup-container');
+        if (container) {
+            container.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        }
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (this.isVisible) {
+                this.centerPopup();
+            }
+        });
+        
+        // Handle orientation change
+        window.addEventListener('orientationchange', () => {
+            if (this.isVisible) {
+                setTimeout(() => {
+                    this.centerPopup();
+                }, 100);
+            }
+        });
     }
     
     addAnimationClasses() {
-        const container = this.popup.querySelector('.popup-container');
-        container.classList.add('wow', 'fadeInUp');
-    }
-    
-    showPopup() {
-        // Restore DOM presence
-        this.popup.style.display = 'flex';
-        this.popup.style.pointerEvents = 'auto';
-        this.popup.style.zIndex = '9999';
-        
-        if (!sessionStorage.getItem('popupShown')) {
-            requestAnimationFrame(() => {
-                this.popup.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                sessionStorage.setItem('popupShown', 'true');
-            });
-            
-            this.hideMessages();
+        const container = this.popup?.querySelector('.popup-container');
+        if (container) {
+            container.classList.add('wow', 'fadeInUp');
         }
     }
     
-    showPopupFromButton() {
-        // Restore DOM presence
-        this.popup.style.display = 'flex';
-        this.popup.style.pointerEvents = 'auto';
-        this.popup.style.zIndex = '9999';
+    centerPopup() {
+        if (this.popup && this.isVisible) {
+            // Force re-center by briefly removing and re-adding centering
+            this.popup.style.display = 'flex';
+            this.popup.style.alignItems = 'center';
+            this.popup.style.justifyContent = 'center';
+        }
+    }
+    
+    showPopup() {
+        if (this.isVisible) return;
         
+        // Clear auto-show timer
+        if (this.autoShowTimer) {
+            clearTimeout(this.autoShowTimer);
+            this.autoShowTimer = null;
+        }
+        
+        // Prevent body scroll
+        document.body.classList.add('popup-open');
+        document.body.style.overflow = 'hidden';
+        
+        // Show popup with proper centering
+        this.popup.style.display = 'flex';
+        this.popup.style.alignItems = 'center';
+        this.popup.style.justifyContent = 'center';
+        this.popup.style.position = 'fixed';
+        this.popup.style.top = '0';
+        this.popup.style.left = '0';
+        this.popup.style.width = '100%';
+        this.popup.style.height = '100%';
+        this.popup.style.zIndex = '999999';
+        
+        // Force reflow
+        this.popup.offsetHeight;
+        
+        // Add active class for animation
+        requestAnimationFrame(() => {
+            this.popup.classList.add('active');
+            this.isVisible = true;
+        });
+        
+        // Mark as shown in session
+        if (!sessionStorage.getItem('popupShown')) {
+            sessionStorage.setItem('popupShown', 'true');
+        }
+        
+        // Hide any existing messages
+        this.hideMessages();
+        
+        // Focus first input for accessibility
+        setTimeout(() => {
+            const firstInput = this.form?.querySelector('input[type="text"]');
+            if (firstInput) {
+                firstInput.focus();
+            }
+        }, 500);
+    }
+    
+    showPopupFromButton() {
+        // Add click animation to button
         if (this.enquireBtn) {
             this.enquireBtn.classList.add('clicked');
             setTimeout(() => {
@@ -89,28 +173,44 @@ class EnquiryPopup {
             }, 300);
         }
         
-        requestAnimationFrame(() => {
-            this.popup.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
-        
-        this.hideMessages();
+        this.showPopup();
     }
     
     hidePopup() {
+        if (!this.isVisible) return;
+        
         // Start hiding animation
         this.popup.classList.remove('active');
+        this.isVisible = false;
+        
+        // Restore body scroll
+        document.body.classList.remove('popup-open');
         document.body.style.overflow = '';
         
         // After animation completes, completely remove from DOM flow
         setTimeout(() => {
-            this.popup.style.display = 'none';
-            this.popup.style.pointerEvents = 'none';
-            this.popup.style.zIndex = '-1';
+            this.hidePopupCompletely();
         }, 400);
         
         // Hide messages when closing
         this.hideMessages();
+    }
+    
+    hidePopupCompletely() {
+        if (this.popup) {
+            this.popup.style.display = 'none';
+            this.popup.style.pointerEvents = 'none';
+            this.popup.style.zIndex = '-1';
+            this.popup.style.opacity = '0';
+            this.popup.style.visibility = 'hidden';
+        }
+    }
+    
+    removeFromDOM() {
+        // Completely remove popup from DOM
+        if (this.popup && this.popup.parentNode) {
+            this.popup.parentNode.removeChild(this.popup);
+        }
     }
     
     hideMessages() {
@@ -139,6 +239,14 @@ class EnquiryPopup {
             
             // Scroll to top of popup
             this.popup.querySelector('.popup-body').scrollTop = 0;
+            
+            // Auto-close and remove from DOM after success
+            setTimeout(() => {
+                this.hidePopup();
+                setTimeout(() => {
+                    this.removeFromDOM();
+                }, 500);
+            }, 3000);
         }
     }
     
@@ -306,16 +414,11 @@ class EnquiryPopup {
             const response = await this.submitEnquiry(formData);
             
             if (response.success) {
-                // Show success message
+                // Show success message and auto-close
                 this.showSuccessMessage(response.message);
                 
                 // Reset form
                 this.form.reset();
-                
-                // Hide popup after 3 seconds
-                setTimeout(() => {
-                    this.hidePopup();
-                }, 3000);
                 
             } else {
                 // Show error message
@@ -374,6 +477,9 @@ document.addEventListener('DOMContentLoaded', () => {
 window.showEnquiryPopup = function() {
     const popup = document.getElementById('enquiryPopup');
     if (popup) {
+        popup.style.display = 'flex';
+        popup.style.alignItems = 'center';
+        popup.style.justifyContent = 'center';
         popup.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
@@ -393,15 +499,10 @@ window.showEnquireButton = function() {
     }
 };
 
-// Auto-hide success/error messages after 5 seconds
-document.addEventListener('DOMContentLoaded', () => {
-    const messages = document.querySelectorAll('.success-message, .error-message');
-    messages.forEach(message => {
-        if (message.classList.contains('show')) {
-            setTimeout(() => {
-                message.style.display = 'none';
-                message.classList.remove('show');
-            }, 5000);
-        }
-    });
-});
+// Remove popup from DOM completely
+window.removeEnquiryPopup = function() {
+    const popup = document.getElementById('enquiryPopup');
+    if (popup && popup.parentNode) {
+        popup.parentNode.removeChild(popup);
+    }
+};

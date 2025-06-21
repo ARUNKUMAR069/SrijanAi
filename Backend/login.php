@@ -1,4 +1,5 @@
 <?php
+
 // filepath: c:\xampp\htdocs\new4\backend\login.php
 
 session_start();
@@ -26,10 +27,11 @@ if (isset($_SESSION['login_success'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - AI Enquiry System</title>
+    <title>Admin Login - SrijanAI Management System</title>
     <link rel="stylesheet" href="assets/css/login-modern.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon">
 </head>
 <body class="login-page">
     <div class="login-container">
@@ -44,7 +46,7 @@ if (isset($_SESSION['login_success'])) {
                     <i class="fas fa-shield-alt"></i>
                 </div>
                 <h2>Admin Login</h2>
-                <p>AI Enquiry Management System</p>
+                <p>SrijanAI Management System</p>
             </div>
             
             <?php if (!empty($error_message)): ?>
@@ -136,29 +138,6 @@ if (isset($_SESSION['login_success'])) {
             </form>
             
             <div class="login-footer">
-                <div class="credentials-info modern-info-card">
-                    <div class="info-header">
-                        <i class="fas fa-info-circle"></i>
-                        <h4>Demo Credentials</h4>
-                    </div>
-                    <div class="credentials-grid">
-                        <div class="credential-item">
-                            <span class="label">Username:</span>
-                            <span class="value">admin</span>
-                            <button class="copy-btn" onclick="copyToClipboard('admin', this)">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                        </div>
-                        <div class="credential-item">
-                            <span class="label">Password:</span>
-                            <span class="value">123456</span>
-                            <button class="copy-btn" onclick="copyToClipboard('123456', this)">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
                 <div class="security-info">
                     <div class="security-badges">
                         <div class="security-badge">
@@ -173,6 +152,10 @@ if (isset($_SESSION['login_success'])) {
                             <i class="fas fa-user-shield"></i>
                             <span>Protected Access</span>
                         </div>
+                    </div>
+                    
+                    <div class="company-info">
+                        <p>&copy; 2024 SrijanAI Innovations Pvt. Ltd. All rights reserved.</p>
                     </div>
                 </div>
             </div>

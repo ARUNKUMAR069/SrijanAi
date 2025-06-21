@@ -17,23 +17,39 @@ $current_page = getCurrentPage();
     </div>
     <!-- End PageWrapper -->
 
+    <!-- Fixed Action Buttons - Available on ALL Pages -->
+    <div class="fixed-action-buttons">
+        
+        <!-- Enquiry Button - ALL PAGES -->
+        <div id="enquireButton" class="enquire-button" role="button" tabindex="0" aria-label="Open enquiry form">
+            <div class="enquire-button-content">
+                <i class="fas fa-headset" aria-hidden="true"></i>
+                <span class="enquire-text">Enquire Now</span>
+                <div class="enquire-pulse" aria-hidden="true"></div>
+            </div>
+        </div>
+        
+        <!-- WhatsApp Widget - ALL PAGES (Right Middle) -->
+        <div class="whatsapp-widget-container">
+            <?php
+            if (file_exists('components/whatsapp-widget.php')) {
+                include 'components/whatsapp-widget.php';
+            }
+            ?>
+        </div>
+        
+    </div>
+
+    <!-- Homepage Specific Elements -->
     <?php if ($current_page === 'index'): ?>
-    <!-- Homepage specific elements -->
+    <!-- Enquiry Popup (only for homepage) -->
     <?php
     if (file_exists('components/popup/enquiry-popup.php')) {
         include 'components/popup/enquiry-popup.php';
     }
     ?>
     
-    <!-- Fixed Enquire Now Button -->
-    <div id="enquireButton" class="enquire-button" role="button" tabindex="0" aria-label="Open enquiry form">
-        <div class="enquire-button-content">
-            <i class="fas fa-headset" aria-hidden="true"></i>
-            <span class="enquire-text">Enquire Now</span>
-            <div class="enquire-pulse" aria-hidden="true"></div>
-        </div>
-    </div>
-    
+    <!-- Theme Toggle -->
     <?php include 'components/theme-toggle.php'; ?>
     <?php endif; ?>
 
@@ -60,8 +76,10 @@ $current_page = getCurrentPage();
     <!-- Homepage specific scripts -->
     <script src="assets/js/popup-script.js"></script>
     <script src="assets/js/theme.js"></script>
-   
     <?php endif; ?>
+
+    <!-- Fixed Action Buttons Script - Global -->
+    <script src="assets/js/fixed-buttons.js"></script>
 
     <!-- IE9 Support -->
     <!--[if lt IE 9]>
